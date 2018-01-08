@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="remark,remarkjs,markdown,slideshow,presentation" />
+    <meta name="description" content="A simple, in-browser, markdown-driven slideshow tool." />
+    <title>Presentation</title>
+    <link href='https://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="/assets/css/presentation_style.css"></link>
+    <style type="text/css">
+    .remark-code, .remark-inline-code {
+      font-family: "Inconsolata", "Courier";
+    }
+    .ex {
+      background-color: #E3E7F0;
+      color: black;
+      padding-left: 5px;
+    }
+    #slide-function .left-column {
+      width: 50%;
+    }
+    #slide-function .right-column {
+      width: 50%;
+    }
+    #slide-databinding #circle {
+      width: 40px;
+      height: 30px;
+      top: 66%;
+      right: 48%;
+      opacity: 0.3;
+      position: absolute;
+      border: 10px solid red;
+      -moz-border-radius: 50px;
+      -webkit-border-radius: 50px;
+      border-radius: 50px;
+    }
+    .img100 img {
+      width: 100%;
+    }
+    .bold {
+      background-color: antiquewhite;
+    }
+    .footnote {
+      position: absolute;
+      color: #A8A358;
+      right: 1.5em;
+      top: 1.5em;
+    }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+layout: true
+class: left
+background-image: url(../assets/images/logos.png)
+---
+name: intro
+class: center
+
+<br/>
+# Data Visualization on the Web with D3 and Leaflet
+
+<br/>
+#### Shruti Mukhtyar 
+
+Web Developer
+
+Geospatial Innovation Facility, UC Berkeley
+
+Projects: [Cal-Adapt](cal-adapt.org), [VTM](http://vtm.berkeley.edu/)
+
+<br>
+Twitter: .bold[_@mapchitra_]  .bold[_@cal_adapt_]
+
+---
+<br/>
+## Today's Plan
+
+- Brief overview of Data Visualization
+- Where does D3 fit in? 
+- Whirlwind introduction to Web Development
+- Explore D3 Core Concepts and build a bar chart
+- Web mapping with Leaflet
+- Discussion (Visualization, Web Development, Learning, Deeper dive into some examples, etc.)
+
+---
+class: center
+
+<br/>
+# Brief Overview of Data Visualization
+<br/>
+
+---
+## What is Data Visualization?
+
+- Graphical display of abstract information for communication and sense-making
+- Modern equivalent of Visual Communication
+
+## Goals
+
+- Using graphics with or without explanatory texts for .bold[Communication]
+- Displaying data for .bold[Analysis]
+- [The Changing Goals of Data Visualization](https://eagereyes.org/criticism/changing-goals-data-visualization)
+
+???
+main goal of data visualization is to communicate information clearly and effectively through graphical means
+
+---
+## Types of Quantitative Messages (Stephen Few)
+
+- .bold[Timeseries]: A single variable is captured over a period of time
+- .bold[Ranking]: Categorical subdivisions are ranked in ascending or descending order
+- .bold[Part-to-whole]: Categorical subdivisions are measured as a ratio to the whol
+- .bold[Deviation]: Categorical subdivisions are compared against a reference
+- .bold[Frequency Distribution]: Number of observations of a particular variable for given interval
+- .bold[Correlation]: Comparison between observations represented by two variables
+- .bold[Nominal Comparison]: Comparing categorical subdivisions in no particular order
+- .bold[Geographic]: Comparison of a variable across a map or layout
+
+
+???
+Author Stephen Few described eight types of quantitative messages that users may attempt to understand or communicate from a set of data and the associated graphs used to help communicate the message:
+
+---
+class: center
+## Form follows function
+.footnote[[Link](http://www.vizualism.nl/infographic-taxonomy/)]
+![](../assets/images/infographics-types.png)
+
+???
+how the visualization method is defined by a combination of the basic questions and the structure of the dataset. 
+---
+## Why publish on the web?
+
+- Fastest way to reach a larger audience
+- Working with web-standard technologies means that your work can be seen and experienced by anyone using a recent web browser, regardless of the operating system and device type.
+- Avoiding proprietary software (e.g. GIS)
+
+
+---
+## Technology Strategy
+
+- Who's your target audience?
+- How much data to you have? Where is it?
+- Is the web map/dataviz going to part of an existing website?
+- Do you need to support tablets and mobiles?
+- Do you need to support offline access?
+- Public or private?
+
+
+## Data Strategy
+
+- Data has a longer life-cycle
+- Web presentations of data age quickly
+
+???
+One of the most important skills you'll learn making websites is this: Don't push for a technology because it's popular or considered cool. Or because it's familiar to you. Find the right solution to the actual problem at hand. Consider the long term plan.
+
+Who will take care of this site for the next 10 years? How will technology choices make that harder or easier? How can you make sure limited time & resources are spent on what's most important (like making content, perhaps) and not on what's not (like endless security updates)?
+
+How can you keep things as simple as possible, while having the power and complexity that is needed? 
+
+These are hard things to learn. Much more than a new language. Experience will teach you. 
+
+
+---
+class: center, img100
+## Visualization Tools
+.footnote[[Link](http://selection.datavisualization.ch/)]
+
+![](../assets/images/vis-tools-1.png)
+---
+class: center, img100
+## Visualization Tools
+.footnote[[Link](http://selection.datavisualization.ch/)]
+
+![](../assets/images/vis-tools-2.png)
+---
+class: center, img100
+## Visualization Tools
+.footnote[[Link](http://selection.datavisualization.ch/)]
+
+![](../assets/images/vis-tools-3.png)
+---
+class: center, img100
+## Visualization Tools
+.footnote[[Link](http://selection.datavisualization.ch/)]
+
+![](../assets/images/vis-tools-4.png)
+---
+class: center, img100
+## Visualization Tools
+.footnote[[Link](http://selection.datavisualization.ch/)]
+
+![](../assets/images/vis-tools-5.png)
+
+---
+class: center
+
+<br/>
+# Where does D3 fit in?
+<br/>
+
+
+---
+## What is D3?
+
+- From .bold[d3js.org]:
+  - D3.js is a JavaScript library for manipulating documents based on data. D3 helps you bring data to life using HTML, SVG and CSS. D3’s emphasis on web standards gives you the full capabilities of modern browsers without tying yourself to a proprietary framework, combining powerful visualization components and a data-driven approach to DOM manipulation.
+
+## Why learn D3?
+
+- Create highly customizable and interactive visualizations on the web
+- Knowing D3 = Hirable skills
+- Opportunity to learn web development
+- Thousands of examples and a great open source community
+- [5 reasons to learn D3](http://d-miller.github.io/Why-Learn-D3/)
+
+
+???
+Use JavaScript and HTML and libraries such as d3.js to create highly customizable visualizations.
+Learning to make even a simple chart can take time, but you develop core web and coding skills along the way.
+
+When learning D3, you learn many other web skills involving JavaScript (known as the “programming language of the web”) and HTML. Even if you decide you hate D3, knowing those skills will be useful in any other project involving web development.
+
+You learn these broader skills because D3 exposes you to the internals of a webpage. In more technical terms, D3 doesn’t use an “intermediate” representation. It instead directly manipulates elements on the Document Object Model (DOM), which is basically just a fancy term for everything that is currently shown on a webpage.
+---
+## Linked Beeswarm Plot
+
+.footnote[[Link](http://bl.ocks.org/HarryStevens/bd3ce1862ccfbb5b0c78b56aca8fca6c)]
+
+![](../assets/images/linked-beeswarm.png)
+
+???
+The beeswarm plot is a one-dimensional scatter plot like "stripchart", but with closely-packed, non-overlapping points.
+Essentially beeswarm plot is used to visualize distributions similar to stripchart, histogram or box and whisker plot. The difference between beeswarm plot and other traditional chart type that visualize distributions is that beeswarm plots the data on the single axis and then offsets in the other direction to show volume or counts.
+---
+class: img100
+## Face of Fracking
+
+.footnote[[Link](http://bl.ocks.org/HarryStevens/bd3ce1862ccfbb5b0c78b56aca8fca6c)]
+
+![](../assets/images/FaceOfFracking.gif)
+---
+class: img100
+## American Panorama - Foreign Born Population
+.footnote[[Link](http://dsl.richmond.edu/panorama/)]
+
+![](../assets/images/AmericanPano.gif)
+
+???
+American Panorama is an historical atlas of the United States for the twenty-first century. It combines cutting-edge research with innovative interactive mapping techniques.
+
+See how the foreign-born density of counties in the US changes over time. Green circles indicate how many people in the US were born in that country for a given year.
+---
+## Simpson's Paradox
+
+.footnote[[Link](http://vudlab.com/simpsons/)]
+
+![](../assets/images/simpsons-paradox.png)
+---
+## Generative Art with D3
+
+.footnote[[Link](https://learningd3.com/blog/generative-art/)]
+
+![](../assets/images/Heart.gif)
+
+???
+Definition of generative. : having the power or function of generating, originating, producing, or reproducing.
+---
+## Optionally...
+- Use software and data visualization servies like Tableau, Excel, Qlik Sense, Datawrapper, Raw
+- GIS Software
+- Use R or Python and associated visualization packages such as ggvis, rCharts, and Shiny
+  - Create interactive graphics but less customization options and/or limited pre-existing graphics types (e.g., bar charts).
+---
+class: img100
+## Visualizing Friendships - R
+
+.footnote[[Link](https://www.facebook.com/notes/facebook-engineering/visualizing-friendships/469716398919)]
+
+![](../assets/images/facebook-friendships.png)
+
+???
+Createdin R, locality of friendship
+---
+class: img100
+## Five Years of Drought - ArcGIS Pro
+
+.footnote[[Link](https://adventuresinmapping.com/2016/07/12/five-years-of-drought/)]
+
+![](../assets/images/us-drought.png)
+
+???
+This is a map showing over five years of drought data (285 weeks, combined into a single view) in the United States.
+The dots are proportionally sized by the amount of time over the past five years spent in drought (the largest dots representing 80% – 100% of the time), and the color is a weighted value of the overall intensity of those droughts (deep purple indicates frequent “exceptional” drought, the most severe category).
+---
+class: center
+
+<br/>
+# Whirlwind Introduction to Web Technology
+<br/>
+
+---
+## Technology Considerations
+
+- Frontend
+  - HTML5, CSS3, JavaScript
+  - Frontend frameworks
+  - SVG, Canvas, WebGL
+  - Mobile
+
+- Backend
+  - Python, Java
+  - Backend frameworks
+  - Web Servers
+
+---
+## Quick Start Technology Stack
+
+- Data, Middleware & User Interface
+  - ArcGIS Online
+  - CARTO
+  - MapBox
+  - Google
+  - Tableau, RStudio
+
+- Embed widgets into your own website
+
+---
+## Hybrid Technology Stack
+
+- Don’t want to maintain database/mapping servers?
+  - Use data and other web services from ArcGIS Online, CARTO, MapBox, Google, etc.
+  - Build custom user interface with JavaScript libraries
+
+- Don’t want to write Javascript/HTML/CSS?
+  - Build your web app with Rshiny; host your data and app on a server running Shiny Server
+  - Build your web app with Python packages (Folium, Bokeh), deploy on a web server
+
+- Interactive maps and data with Google Sheets
+
+---
+## Custom Technology Stack
+
+![](../assets/images/custom-tech-stack.png)
+---
+## Where to begin?
+
+- Tools: Code Editor, Browser & Browser's Developer Tools
+- HTML
+- CSS
+- DOM
+- JavaScript
+- Web formats for displaying graphics: SVG and Canvas
+
+<!--NEXT SLIDE -->
+---
+## Tools for Web Development
+
+- Code Editor 
+  - Sublime Text, Atom, PyCharm, Vim, Notepad++, IDLE, Gedit, TextMate
+  - Syntax highlighting, indentation, autocomplete, bracket matching
+  - Run interpreters, debuggers
+
+- Browser
+  - Developer Tools - press `Ctrl+Shift+I` (or `F12`) in Chrome
+  - More info on Chrome Developer tools [here](https://developers.google.com/web/tools/chrome-devtools/)
+
+---
+## Quick Review of Client & Server
+
+![](../assets/images/HTTP_Steps.png)
+
+- HTTP, language of the web
+- Browser sends HTTP GET Request. Server sends response for each request with content and/or status message.
+- [HTTP Basics](https://www.ntu.edu.sg/home/ehchua/programming/webprogramming/HTTP_Basics.html)
+
+???
+When a link is clicked, the browser creates an .em[HTTP Get Request] that is sent to the server. Server responds. Browser displays the page. Sees that it needs a few more things - e.g. images, fonts, other files. Browser sends new a GET request for each item. Server sends response for each request with status code (200 - found, 304 - retrieving from browser cache, 404 - not found, 500 - server error )
+
+---
+### Hyper Text Markup Language (HTML)
+
+- HTML is not a programming language; it is a markup language
+- Role &raquo; Describes content
+- HTML Elements consist of a opening tag, the content, and a closing tag
+
+![](../assets/images/grumpy-cat-small.png)
+
+  ```xml
+    <ul>
+      <li><a href="gif.berkeley.edu">Home Page</a></li>
+      <li><a href="gif.berkeley.edu/people">Staff</a></li>
+    </ul>
+    <div id="map" class="center" style="height:500px;"></div>
+  ```
+
+- HTML5 Resources
+  - [Dive into HTML5](http://diveintohtml5.info/)
+  - [Mozilla Developer Network](https://developer.mozilla.org/en-US/docs/Learn/HTML)
+
+???
+HTML and its DOM model, of course, provide the foundation on which any web based project must run. D3 provides terse APIs for interacting with the DOM, and some D3 projects are built entirely with native HTML elements. That said, most D3 visualizations create SVG output, which we'll discuss briefly below.
+---
+
+## Cascading Style Sheet (CSS)
+
+- Not a programming or markup language
+- Role &raquo; Describes presentation of a document written in HTML or XML (e.g. SVG)
+- Selectors, properties, and values
+- Properties and Attributes
+  ```xml
+    #map {
+      height: 500px;
+    }
+    h1 {
+      font-family: "Helvetica", "sans-serif";
+      font-weight: bold;
+      background-color: #000;
+    }
+    .chart {
+      float: left;
+    }
+  ```
+- CSS3 Resources
+  - [Mozilla Developer Network](https://developer.mozilla.org/en-US/docs/Learn/CSS)
+
+???
+Whether your project targets the DOM or SVG, you will use CSS to style it. D3 provides APIs for adding and removing CSS classes as well as manipulating individual style properties, so as long as you know the basics you shouldn't have any trouble.
+---
+name: dom
+
+## Document Object Model (DOM)
+
+- Structured representation of the document (a tree) created by the browser
+- HTML you write is parsed by the browser and turned into the DOM
+- Programming interface for HTML and SVG documents
+- JavaScript manipulates the DOM
+
+![](../assets/images/rendering.svg)
+
+???
+When a browser displays a document, it must combine the document's content with its style information. It processes the document in two stages:
+The browser converts HTML and CSS into the DOM (Document Object Model). The DOM represents the document in the computer's memory. It combines the document's content with its style.
+The browser displays the contents of the DOM.
+Understanding the DOM helps you design, debug and maintain your CSS because the DOM is where your CSS and the document's content meet up.
+---
+## Conceptual Web Page
+
+  ```xml
+  <!DOCTYPE html>
+  <html>
+  <head>
+      <!-- head content -->
+      <style type="text/css">
+        div {
+          color: red;
+        }
+      </style>
+  </head>
+  <body>
+      <h1>Header text here</h1>
+      <div>
+          <h2>Subheader text here</h2>
+          <p>Paragraph text here</p>
+      </div>
+      <div>
+          <p>Another paragraph here</p>
+      </div>
+      <script>
+          <!-- JavaScript content -->
+      </script>
+  </body>
+  </html>
+  ```
+---
+
+## The DOM for conceptual web page
+
+![](../assets/images/dom_model.jpg)
+
+- [Understading the DOM](https://www.digitalocean.com/community/tutorial_series/understanding-the-dom-document-object-model)
+
+---
+## JavaScript
+
+- "Easy to learn, hard to master"
+- Role &raquo; Creating interaction
+- Interpreted by your browser
+- Asychronous (code executes in background after client-browser recieves data from server)
+- Get familiar with
+    - Working with json objects
+    - Array functions (forEach, filter, map)
+    - Method chaining, Callbacks, Closures, Modules
+- JS Resources
+  - [Mozilla Developer Network](https://developer.mozilla.org/en-US/docs/Learn/JavaScript)
+
+???
+JavaScript is arguably more difficult to learn than related technologies such as HTML and CSS. Before attempting to learn JavaScript, you are strongly advised to get familiar with at least these two technologies first, and perhaps others as well.
+
+---
+## SVG
+
+```xml
+<svg width="300" height="180">
+  <rect x="10" y="20" width="20" height="50" fill="blue"
+              stroke="red" stroke-width="1"/>
+  
+  <circle cx="100" cy="100" r="25" fill="red"
+              stroke="#ddd" stroke-width="5"></circle>
+              
+  <g transform="translate(5, 15)">
+    <text x="0" y="0">My graphic</text>
+  </g>
+              
+  <g transform="translate(5, 55)">
+    <!-- M: move to (jump)
+         L: line to
+         Q: curve to (quadratic) -->
+    <path d="M0,50 L50,0 Q100,0 100,50"
+      fill="none" stroke-width="3" stroke="black" />
+  </g>
+  
+  <g transform="translate(5, 105)">
+    <!-- C: curve to (cubic)
+         Z: close shape -->
+    <path d="M0,100 C0,0 25,0 125,100 Z" fill="black" />
+  </g>
+</svg>
+```
+- Play with this code on [SVG Graphic Primitives - JSFiddle](https://jsfiddle.net/mukhtyar/04m3xn4r/)
+
+???
+Where HTML has the <div> and <span> tags, SVG has the <g> tag for an arbitrary group. You’ll see <g> a lot in D3 examples. They’re great for applying styles to a group (including re-positioning the groups).
+
+The <text> tag is good for simple labels. The <path> tag is powerful but complex, it can be used for either lines or arbitrary filled-in shapes depending on the styling.
+
+SVG is a "language for describing two-dimensional vector and mixed vector/raster graphics in XML". Really rolls off the tongue, doesn't it?
+
+All you really need to know is that vectors provide resolution independence, allowing you to create graphics that look good everywhere from phones to giant desktop monitors. Additionally, SVG graphics do not participate in the browser's standard layout flow.
+
+What does that mean? Well, when you create an SVG element using markup like <svg width="300" height="300"></svg>, that 300x300 block will appear in the browser's layout flow just like any other element. If the tag was defined after a <div> tag, the SVG will be rendered below the div. Tags defined after the SVG tag will be rendered below it. Within that block, however, there is no automatic layout to prevent items from overlapping. If you create two circles with the markup <circle r="20" /><circle r="20" /> they will be rendered in the same exact spot, right on top of one another. While this may seem inconvenient at first, it actually provides an incredible amount of flexibility. Avoiding overlap requires explicit coordinates but SVG graphics are capable of extraordinary expressiveness through layering, opacity, interactivity, and fluid animation.
+
+---
+## SVG (contd.)
+
+- Coordinate system, top-left is (0, 0)
+- Depth depends on order in which shapes are drawn
+
+![](../assets/images/svg-coordinate-system.png)
+
+---
+## SVG v/s Canvas
+
+- HTML5 Canvas is a raster based format for drawing on the web
+  - You can draw raster graphcis with D3
+  - You can only get pixel values on click event
+  - Faster
+
+- SVG (Scalable Vector Graphics) is a vector based format for drawing on the web
+  - HTML has div and span, etc.; SVG has circle and rect, etc.
+  - SVG is a DOM for graphical elements
+  - You can attach events to SVG elements
+  - Most D3 examples work with SVG
+
+---
+
+## Codepen.io
+
+- Playground for the front-end web developmet
+
+- Open this [link](https://codepen.io/mukhtyar/project/editor/XaboqA/) in a new tab to explore how HTML, CSS and JavaScript work together.
+
+- Some other playgrounds
+  - [JSFiddle](https://jsfiddle.net/)
+  - [JS Bin](https://jsbin.com/?html,js,output)
+  - [Blockbuilder - D3](http://blockbuilder.org/)
+
+???
+At CodePen.io, they describe themselves as a “playground for the front-end side of the web.” CodePen is great for testing out bugs, collaborating, and finding new inspiration. It works by allowing you to create “pens”, which are sets of HTML, CSS, and JavaScript.
+---
+## Web Development Resources
+
+- If you are going to develop medium to large scale web apps learn more about using front-end development tools. 
+    - [Getting Started Web Development Guide](http://jlord.us/blog/getting-started.html)
+    - [Front-end Handbook](https://www.gitbook.com/book/frontendmasters/front-end-handbook/details)
+- Google Search
+    - Favor results from Stack Exchange, Mozilla Developer Network, CSS-Tricks
+- [caniuse](caniuse.com) - Check which browsers support what features
+- Web Design
+    - [A List Apart](http://alistapart.com/)
+    - [Webdesigner News](http://www.webdesignernews.com/) - curated stories
+- [Eloquent Javascript](eloquentjavascript.net)
+- [Egghead.io](https://egghead.io/) - Bite size web dev video training
+- Lynda.com, Frontend Masters, CodeAcademy, Udacity, Coursera, etc.
+
+
+---
+class: center
+
+<br>
+
+# Explore D3 Core Concepts and build a bar chart
+
+![](../assets/images/d3.jpg)
+
+---
+
+## D3 (Data Driven Documents)
+
+- [D3.js](https://d3js.org/) is a javascript for producing dynamic, interactive data visualizations in web browsers.
+
+- Built on the fundamental web standards of HTML, CSS, SVG, and JavaScript.
+
+![](../assets/images/D3_toolchain.png)
+
+- Created by [Mike Bostock](https://bost.ocks.org/mike/), Vadim Ogievetsky and Jeffrey Heer (all at that time were part of the Stanford Visualization Group).
+
+
+???
+D3.js is a JavaScript library for manipulating documents based on data. D3 helps you bring data to life using HTML, SVG, and CSS. D3’s emphasis on web standards gives you the full capabilities of modern browsers without tying yourself to a proprietary framework, combining powerful visualization components and a data-driven approach to DOM manipulation.
+D3 is not a monolithic framework that seeks to provide every conceivable feature. Instead, D3 solves the crux of the problem: efficient manipulation of documents based on data. This avoids proprietary representation and affords extraordinary flexibility, exposing the full capabilities of web standards such as HTML, SVG, and CSS. With minimal overhead, D3 is extremely fast, supporting large datasets and dynamic behaviors for interaction and animation. D3’s functional style allows code reuse through a diverse collection of components and plugins.
+Embedded within an HTML webpage, the JavaScript D3.js library uses pre-built JavaScript functions to select elements, create SVG objects, style them, or add transitions, dynamic effects or tooltips to them. These objects can also be widely styled using CSS. Large datasets can be easily bound to SVG objects using simple D3.js functions to generate rich text/graphic charts and diagrams. The data can be in various formats, most commonly JSON, comma-separated values (CSV) or geoJSON, but, if required, JavaScript functions can be written to read other data formats.
+
+D3 is built on the fundamental web standards of HTML, CSS, SVG, and JavaScript. For the purposes of this course it is only assumed you have a basic understanding of HTML, CSS, and JavaScript. SVG will be taught from first principles as needed.
+---
+
+## What does it do?
+
+- It is *not* a graphics library, it is *not* a charting library, it is a general purpose data visualization library
+
+- Has everything you need for visualizing complex data BUT you will not find commands like barchart, scatterplot, or piechart, or even map
+
+- Visualizes data using web standards (HTML, Javascript, CSS, SVG)
+
+- Heavily used in data journalism and visualization. New York Times has been the pioneer in data visualization and data journalism.
+
+- Most and foremost a DOM manipulation library (in this regard similar to jquery).
+
+- Provides  handy utilities for processing data (array, time series, geo data)
+
+- Comes with a lot of functions and methods to create mapping functions that will map your data directly to properties on html elements
+
+- Filled with algorithms (voronoi, quadtrees, circle fitting, convex hull, projections)
+
+---
+ ### Learning D3
+
+.bold[One of the most interesting aspects about d3 is that it is the intersection between design and code, math and art, data and story - Ian Johnson]
+
+  - Very active user community in Bay Area.
+  - [Bay Area d3 User Group](http://www.meetup.com/Bay-Area-d3-User-Group/).
+  - Rich ecosystem of examples showing visualization types, coding techniques:
+    - [blockbuilder.org/](http://blockbuilder.org/)
+    - [bl.ocks.org/](http://bl.ocks.org/)
+
+- [Navigating the D3 Ecosystem](http://enjalot.github.io/talks/navd3eco/)
+
+- How do I learn D3.js? [Quora thread](https://www.quora.com/How-do-I-learn-D3-js)
+
+- D3 version 3 not the same as .bold[D3 version 4]
+
+???
+Unfortunately, D3 also has a bit of a reputation as being hard to learn, but it doesn't have to be. D3 is built on a small handful of core concepts and once you understand them you can begin working toward mastery.
+---
+
+## Resources
+
+- Books
+  - [Interactive Data Visualization for the Web](http://alignedleft.com/work/d3-book-2e)
+  - [D3 Tips and Tricks](https://leanpub.com/d3-t-and-t-v4)
+
+- Curated lists of data viz and data viz research
+  - [visualisingdata.com](http://www.visualisingdata.com/)
+  - [The Chartmaker Directory](http://chartmaker.visualisingdata.com/)
+
+-  [Mike Bostock Blog](https://bost.ocks.org/mike/)
+
+- For geographic visualizations
+  - [Learning D3.js 4 Mapping](https://www.amazon.com/Learning-D3-js-Mapping-cutting-edge-visualizations/dp/1787280179/ref=pd_lpo_sbs_14_t_2?_encoding=UTF8&psc=1&refRID=0555NNJZQ8NJH0Q0R5SD)
+  - [Jason Davies](https://www.jasondavies.com/maps/), [Jason Davies Code Blocks](https://bl.ocks.org/jasondavies)
+
+- [API documentation](https://github.com/d3/d3/blob/master/API.md)
+
+---
+## Core Concepts - Declarative API
+
+- .bold[Declarative]: Tell D3 what you want, not how you want it done
+- .bold[API]: Methods and objects you use to interact with software
+  - e.g. keyboard interface for a computer
+- Describe a relationship between data and UI (User Interface) elements, D3 handles implementation details
+
+```javascript
+d3.selectAll('p').style('color', 'red');
+```
+
+- Example: [JS Fiddle](https://jsfiddle.net/mukhtyar/ssdmr02s/)
+
+---
+## Core Concepts - Selections
+
+- D3 provides shorthand for selecting and manipulating DOM objects (similar to jQuery)
+
+```javascript
+// Anywhere on the page, one or multiple items
+d3.select('#hero');       // selects the element with an id="foo" attribute 
+d3.selectAll('.primary'); // selects all elements with CSS class primary 
+d3.selectAll('p');     // select all divs on the page 
+
+// Within an existing selection
+d3.select('#hero').selectAll('p');
+```
+
+- Create/Read/Update/Delete (CRUD) properties of selections
+- Getters and setters
+- .bold[selection.attr(name[, value])]
+
+```javascript
+d3.select('a').attr('href'); // get the href value of the first link on the page 
+d3.select('a').attr('href', 'http://cal-adapt.org'); // set the first link's href to Cal-Adapt 
+```
+
+```javascript
+d3.selectAll('p').attr('href', function(d, i, nodes) {
+  // the first parameter is named d and is the node's data point, or datum 
+  // the second parameter is named i and is the node's index in the selection 
+  // the third parameter is an array of the nodes in the selection 
+})
+```
+
+???
+Methods as dual purpose getters and setters is something you will see and use a lot. selection.attr is for working with element attributes. When calling selection.attr(name) the method will act as a getter and return the name attribute's value. selection.attr(name, value) will cause the method to act as a setter, assigning value to the name attribute.
+
+Lastly, `this` === nodes[i], the function is bound to the DOM element, so `this` refers to the actual node 
+
+you will see this everywhere
+---
+## Core Concepts - Selections (contd.)
+
+- .bold[selection.style(name[, value])]
+
+```javascript
+d3.select('a').style('color'); // get the text color of the first link 
+d3.select('a').style('color', 'red'); // set the first link's text color to red 
+d3.select('a').style('color', function(d, i, nodes) {
+  return getColorByURL(this.href); // this is the native DOM element 
+});
+```
+
+- .bold[selection.classed(names[, value])]
+
+```javascript
+d3.select('#submitBtn').classed('btn-lg'); // does submitBtn's classList include btn-lg? 
+d3.select('#submitBtn').classed('btn btn-lg', true); // apply the btn and btn-lg classes 
+d3.selectAll('button').classed('btn', function(d, i, nodes) {
+  return i < 3; // apply the btn class to the first 3 buttons 
+});
+```
+```javascript
+// selection.classed similar to selection.attr('class'[, value])
+selection.attr('class', 'btn btn-lg')
+```
+---
+## Core Concepts - Selections (contd.)
+
+- .bold[selection.text([value]) && selection.html([value])]
+
+```javascript
+d3.select('#someDiv').text(); // get the innerText of #someDiv 
+d3.select('#someDiv').text('Hello World!'); // set the innerText of #someDiv 
+d3.select('#someDiv').html(); // get the innerHTML of #someDiv 
+d3.select('#someDiv').html('<h2>Hello World!</h2>'); // set the innerHTML of #someDiv 
+```
+
+- .bold[selection.append(type) && selection.insert(type[, before])]
+
+```javascript
+d3.select('body').append('p');
+```
+
+- .bold[selection.remove()]
+
+```javascript
+d3.select('body').remove('p');
+```
+
+- Handle events - .bold[selection.on()]
+
+```javascript
+d3.selectAll('button').on('click', handleButtonClicks);
+d3.select('body').on('mousemover', trackMousePosition);
+```
+---
+## Core Concepts - Data Joins
+
+- Real power of D3 is joining data and selections
+- .bold[selection.data()] - accepts an array of data items and joins them to the DOM elements in the selection
+
+```javascript
+<div id="chart">
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+</div>
+```
+
+```javascript
+const data = [90, 70, 50, 30, 10];
+ 
+d3.select('#chart')
+  .selectAll('div')
+  .data(data) // pair each number in the array with an empty div 
+    .attr('class', 'bar') // color, height, and spacing via CSS 
+    .style('width', function(d) {
+      return d + 'px' // use the data items as pixel widths 
+    });
+```
+
+???
+But when it comes to controlling a document or visualization based on underlying data, D3's power and expressiveness are truly unparalleled.
+The fundamental API for this is selection.data which accepts an array of data items and joins them to the DOM elements in the selection.
+---
+## Core Concepts - Data Joins (contd.)
+
+- ENTER, UPDATE and EXIT SELECTIONS
+  - Mike Bostock - [Thinking with Joins](https://bost.ocks.org/mike/join/)
+  - Mike Bostock - [General Update Pattern examples](https://bl.ocks.org/mbostock/3808218)
+  - Also [D3 In Depth book](http://d3indepth.com/) (in progress) is great!
+
+![](../assets/images/data-join.png)
+
+---
+## Core Concepts - Data Joins (contd.)
+
+- .bold[selection.data()] is followed by .bold[selection.enter()] and .bold[selection.append()]
+
+```javascript
+<div id="chart">
+</div>
+```
+
+```javascript
+const data = [90, 70, 50, 30, 10];
+ 
+d3.select('#chart')
+  .selectAll('div')
+  .data(data) // returns an empty selection
+  .enter()
+    .append('div')
+    .attr('class', 'bar') // color, height, and spacing via CSS 
+    .style('width', function(d) {
+      return d + 'px' // use the data items as pixel widths
+    });
+```
+---
+## Core Concepts - Data Joins (contd.)
+
+- Use with dynamic data
+
+```javascript
+const data = [
+  { name: 'Alice', math: 93, science: 84 },
+  { name: 'Bobby', math: 81, science: 97 },
+  { name: 'Carol', math: 74, science: 88 },
+  { name: 'David', math: 64, science: 76 },
+  { name: 'Emily', math: 80, science: 94 }
+];
+
+function render(subject) {
+  d3.select('#chart') // within the #chart container... 
+    .selectAll('div') // select all the divs 
+    .remove();         // and remove them, clearing the #chart div 
+ 
+  // now just repeat our creation pattern from the first example 
+  d3.select('#chart')
+  .selectAll('div')
+  .data(data)
+  .enter()
+    .append('div')
+    .attr('class', 'bar')
+    .style('width', function(d) {
+      return d[subject] + 'px' // use the subject passed in to grab the correct property 
+    });
+}
+ 
+render('math'); // render the math data when the page first loads 
+```
+---
+## Core Concepts - Data Joins (contd.)
+
+- Use .bold[selection.transition()] to animate
+
+```javascript
+function render(subject) {
+  // store a reference to the bars already on the chart 
+  const bars = d3.select('#chart')
+    .selectAll('div') // this won't be empty after the first time this function runs 
+    .data(data, function(d) {
+      return d.name // use the name property to match across updates 
+    });
+ 
+  const newBars = bars.enter() // use the enter selection 
+    .append('div') // to add new bars for any data items without an existing DOM element 
+      .attr('class', 'bar')
+      .style('width', 0); // set the initial width to 0 
+ 
+  // combine the selections of new and existing bars 
+  // so you can act on them together 
+  newBars.merge(bars)
+    .transition() // animate everything that comes after this line! 
+    .style('width', function(d) {
+      return d[subject] + 'px' // set the width like normal! 
+    });
+}
+```
+
+---
+## Core Concepts - Scales
+
+- Mapping: An operation that associates each element of a given set (the domain) with one or more elements of a second set (range)
+- Any (computer) visualization problem can be described as a mapping problem.
+
+![](../assets/images/mapping.png)
+
+```javascript
+const percentToDecimal = d3.scaleLinear()
+  .domain([0, 100])
+  .range([0, 1])
+
+percentToDecimal(0)   // 0 
+percentToDecimal(50)  // 0.5 
+percentToDecimal(100) // 1 
+```
+
+???
+another one of D3’s fundamental concepts is devoted entirely to transformations. Data visualization is ultimately about transformation. Quarterly revenue becomes column height, the winning political party becomes a state's fill color on a map, and on and on. In D3 these transformations are done using scales, and they're another one of D3's core concepts.
+
+Linear scales are the most straightforward as they directly translate values from one context to another.
+
+Calling d3.scaleLinear() will instantiate a new linear scale. We then call two methods on the scale, passing each of them a two-element array representing the minimum and maximum values. The domain() method is used to specify the possible input values while range() specifies the corresponding output values. The return value of this code is a scale function named percentToDecimal. This function will accept a percentage value and return the corresponding decimal.
+---
+## Core Concepts - Scales (contd.)
+
+- Scales in practice
+
+```javascript
+// specify chart dimensions 
+const width = 600;
+const height = 400;
+ 
+// create a scale to map scores to bar widths 
+// test scores are stored as percentages 
+// a score of 100 should create a full-width bar 
+const xScale = d3.scaleLinear()
+  .domain([0, 100])
+  .range([0, width]);
+ 
+d3.select('#chart')
+  .selectAll('div')
+  .data(data)
+  .enter()
+    .append('div')
+    .style('width', function(d) {
+      // pass the score through the linear scale function 
+      return xScale(d[subject]) + 'px'
+    });
+```
+---
+## Core Concepts - Scales (contd.)
+
+- Lot of other scales, e.g. .bold[d3.bandScale()]
+
+```javascript
+// specify chart dimensions 
+const width = 600;
+const height = 400;
+ 
+// create a scale to map scores to bar widths 
+// test scores are stored as percentages 
+// a score of 100 should create a full-width bar 
+const xScale = d3.scaleLinear()
+  .domain([0, 100])
+  .range([0, width]);
+
+const yScale = d3.scaleBand()
+  .domain(data.map(function(d) { return d.name }))
+  .range([0, height]);
+ 
+d3.select('#chart')
+  .selectAll('div')
+  .data(data)
+  .enter()
+    .append('div')
+    .style('width', function(d) {
+      // pass the score through the linear scale function 
+      return xScale(d[subject]) + 'px'
+    })
+    .style('height', function(d) {
+      return yScale.bandwidth() + 'px'
+    });
+```
+---
+## D3 - Other concepts
+
+- Lots of convenience functions for loading and manipulating data, working with arrays
+
+- Axes, Scales, Colors
+
+- Manipulate structure of your data - d3.nest()
+
+- D3 [API](https://github.com/d3/d3/blob/master/API.md) Reference
+
+- Writing reusable components
+  - A good place to start is by reading [Towards Resuable Charts](https://bost.ocks.org/mike/chart/) where Mike Bostock proposes a convention for creating reusable charts.
+  - [This](https://bocoup.com/weblog/reusability-with-d3) blog post and [this book](http://backstopmedia.booktype.pro/developing-a-d3js-edge/1-getting-started/) do a great job on clarifying the resuable charts api with examples and explanations.
+
+---
+## Other options for using D3
+
+- Rickshaw, Highcharts, NVD3 are libraries built on top of D3
+
+- D3 and [Crossfilter](http://square.github.io/crossfilter/) (Fast Multidimensional Filtering for Coordinated Views)
+
+- Open-source tools binding D3 to R, Python
+
+- [Vega](https://github.com/vega/vega/wiki/Vega-and-D3) - higher-level visualization specification language on top of D3
+
+---
+class: center
+
+<br/>
+# Web Mapping
+<br/>
+---
+## What is a Web Map?
+
+- Digital map that works in a web browser (as opposed to PDF/Image files)
+  - Interactive
+  - Developed using web application technologies
+– Not specialized mapping software
+
+![](../assets/images/web-map-system.png)
+---
+## A Quick Recap of Web Mapping History
+
+- 1996 MapQuest
+
+![](../assets/images/mapquest.png)
+---
+## A Quick Recap of Web Mapping History (contd.)
+
+- 1997 - 2004
+  - MapInfo, AOL buys MapQuest
+  - GPS Selective Availability ends (2000)
+  - Microsoft MapPoint
+  - Open Street Map (OSM) founded in UK (2004)
+  - NASA releases WorldWind
+  - Yahoo! Maps
+  - Google buys Where2, Keyhold & ZipDash
+
+---
+## A Quick Recap of Web Mapping History (contd.)
+
+- 2005 - Google Maps
+
+![](../assets/images/google-maps-2005.png)
+
+---
+## A Quick Recap of Web Mapping History (contd.)
+
+- 2005 - First Google Maps Mashup
+
+![](../assets/images/google-maps-mashup-2005.png)
+
+---
+## Technological Breakthroughs
+
+- Slicing a square map into smaller square image tiles
+  – Web Mercator projection
+- Slippy maps with smooth zoom and pan
+  – Web development techniques (AJAX) used for requesting data (map tiles) from server asynchronously (in the background)
+- Open API
+- No plugins, seamless user experience
+- Mapping as a service
+
+---
+## Map Tiles
+
+- 256 pixels x 256 pixels image files
+- Pre-rendered or rendered on the fly
+- 360 billion tiles to cover the whole world at 20 zoom levels
+
+![](../assets/images/map-tiles.png)
+---
+## Fast forward to present
+
+- Web Services, Open Data, Open Standards and Formats, Free and Open Source Software
+
+![](../assets/images/web-mapping-current.png)
+
+---
+## Web Services
+
+- APIs (Application Programming Interface )
+  - Basemaps, Data, Geocoding, Navigation, Spatial Analysis • Commercial
+  - Google, ESRI, CARTO, MapBox, Planet ... many more – Free and paid tiers
+
+- Non-commercial
+  - Data.gov, NPMap, SF Open Data, NASA
+  - Cal-Adapt, Landcarbon, Ecoengine @berkeleyGIF
+
+---
+## Open Data
+
+- Free
+- Limited or no copyright restrictions
+- Contributed by government, researchers, non-profits, citizens
+  - World Bank, OpenStreetMap, NASA
+- Pay attention to:
+  - Attribution requirements
+  - Restrictions on redistribution
+  - Data Quality
+
+---
+## Data - OpenStreetMap
+
+- Collaborative project to create a free and editable map of the world
+- Volunteered geographic information
+- Primary output = DATA not the map
+- Open Database License (ODBL)
+  - License/Use cases
+- Getting the data (planet.osm.org & other)
+  - Planet extract (666 GB uncompressed; 30-40 GB compressed)
+  - Smaller extracts for countries, metro areas available
+  - Updated regularly
+  - Tools for importing into PostgreSQL/PostGIS
+
+---
+## Open Standards 
+
+- Data Formats
+  - GeoJSON, TopoJSON, KML, Shapefile, WaterML, NetCDF...
+- Specifications
+  - Web Map Services, Web Feature Services, Vector Tiles
+
+---
+## Open Standards - GeoJSON
+
+- File format for spatial data common on the web
+- Subset of JSON format (JavaScript Object Notation)
+- Converting to GeoJSON
+  - GDAL, geojson.io, fiona (python package), QGIS, ArcGIS
+- TopoJSON
+  - Extension that encodes topology – More compact than GeoJSON
+
+---
+## Open Standards - Vector Tiles
+
+- Instead of raster images data is returned in vector format
+- More efficient
+- Contains
+  - Data and geometry
+  - Instructions on styling, instructions on stitching data back together
+- Style on the fly in browser instead of server (no need to pre- render)
+- Formats
+  - Mapbox Vector Tile (MVT), GeoJSON/TopoJSON vector tiles
+
+---
+## FOSS (Free and Open Source Software) 
+
+- Dekstop
+  - GRASS, QGIS
+- Geo-enabled databases
+  - PostgreSQL/PostGIS
+- Software for exposing spatial data to the web
+  - MapServer, Mapnik, GeoServer, Tilecache
+- JavaScript mapping and data visualization libraries
+- System libraries
+  - GDAL, PROJ4
+
+---
+## Leaflet
+
+- Lightweight, simple & flexible open source JavaScript mapping library
+
+- Created by [Vladimir Agafonkin](http://agafonkin.com/en/). Great speaker, checkout some of his talks on Leaflet
+
+- Mobile-friendly. Well documented [API](http://leafletjs.com/reference.html), huge amount of [plugins](http://leafletjs.com/plugins.html). 
+
+- Use with other JS mapping libraries (like Esri-Leaflet) or by itself. Similar libraries - OpenLayers, ModestMaps, Polymaps.
+
+- Carto.js and Mapbox.js libraries are built on top of Leaflet.
+
+- [Leaflet FAQ](https://github.com/Leaflet/Leaflet/blob/master/FAQ.md)
+
+---
+
+## What does it do?
+
+- Slippy maps with panning and zooming
+
+- Provides functions for converting data into map layers
+
+- Provides mouse interaction
+
+- Does not provide any data
+
+- You provide tile basemaps and data for overlays
+
+- Easy to extend with plugins
+
+---
+## Overlays - GeoJSON
+
+  ```javascript
+  var obj = 
+  { "type": "FeatureCollection",
+      "features": [
+        { "type": "Feature",
+          "geometry": {"type": "Point", "coordinates": [102.0, 0.5] },
+          "properties": {"prop0": "value0"}
+         },
+        { "type": "Feature",
+           "geometry": {
+             "type": "Polygon",
+             "coordinates": [
+               [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0],
+                 [100.0, 1.0], [100.0, 0.0] ]
+               ]
+            },
+           "properties": {
+             "prop0": "value0",
+             "prop1": {"this": "that"}
+            }
+        }
+      ]
+  }
+  ```
+- [GeoJSON Specification](http://geojson.org/geojson-spec.html), [Validate your geojson](http://geojsonlint.com/)
+- Convert from shapefile - [geojson.io](http://geojson.io/), [Mapshaper](http://mapshaper.org/), GIS
+- GeoJSON data coordinates should be in latitude, longitude (WGS 84)!!!
+---
+
+## Basemaps & Overlays - Map Tiles
+
+![](../assets/images/Mapbox-example.jpg)
+
+- [How Web Maps Work](https://www.mapbox.com/help/how-web-maps-work/)
+- [Web Mercator](https://en.wikipedia.org/wiki/Web_Mercator) - Standard projection for map tiles
+
+
+---
+# Leaflet Exercises
+
+- [Link to Github Repo](https://github.com/berkeley-gif/bootcamp/blob/master/Day_3/Web_Apps_with_Leaflet_and_D3/leaflet/README.md)
+
+- Before we begin:
+  - Start a local server
+  - Code Editor and Browser
+  - Workflow for the exercises
+
+
+---
+## Exercise 01 - Make a map
+
+- This exercise covers the basics for creating a Leaflet map element and adding a basemap to it.
+
+- Four things you absolutely need for adding Leaflet map to a web page
+  - Leaflet CSS file
+  - Leaflet JavaScript file
+  - A div element with an `id` attribute
+  - A `css` height for your map div
+
+---
+
+## Exercise 02 - Add Overlay
+
+- Adding an overlay of tick collection point locations
+
+---
+
+## Exercise 03 - Style Overlay
+
+- Experiment with applying custom styles to geojson overlay
+
+- Leaflet allows you to pass a variety of options to `L.geoJson` to style your layer. The options are written as [callback functions](http://www.impressivewebs.com/callback-functions-javascript/). 
+
+- An example of a callback function
+
+```javascript
+  // Callback Example
+
+  function mySandwich(param1, param2, callback) {
+    alert('Started eating my sandwich.\n\nIt has: ' + param1 + ', ' + param2);
+    callback();
+  }
+
+  mySandwich('ham', 'cheese', function() {
+    alert('Finished eating my sandwich.');
+  });
+```
+
+---
+
+## Exercise 04 - Working with Larger Datasets
+
+- Geojson files with lots of data can take longer to load depending on size and network speed. And on the web you never want to keep your user waiting :-) There are couple of ways you can deal with larger files.
+
+- Option 1 - Use the topojson format. Topojson is an extension of GeoJSON that encodes topology.
+  - Convert geojson to topojson using [mapshaper.org](http://mapshaper.org/). You can also further reduce file size by simplifying the geometry. It depends on your app, how much detail you need to show.
+
+- Option 2 - Host the data on service providers like CARTO, ArcGIS Online, Mapbox. These companies also provide their own web mapping libraries (some built on top of Leaflet)
+
+- Great [mapmakers cheatsheet](https://github.com/tmcw/mapmakers-cheatsheet) on other options for dealing with large files with Leaflet and web maps in general.
+
+---
+
+## Exercise 05 - Add a Leaflet plugin for Geocoding
+
+- Huge list of [Leaflet plugins](http://leafletjs.com/plugins.html) to extend functionality. 
+
+- We will add a geocoding plugin called [Leaflet Control Geocoder](https://github.com/perliedman/leaflet-control-geocoder)
+
+---
+
+## Exercise 06 - Spatial Analysis in your Browser
+
+- Experiment with doing some spatial analysis directly in your browser using Turf.js
+
+- [Turf.js](http://turfjs.org/) is a javascript library for spatial analysis. MapBox has a great intro on using Turf that you can check out [here](https://www.mapbox.com/help/intro-to-turf/).
+
+---
+
+## Leaflet Review
+
+- Adding content and styling to make it look like a real website
+- Adding legends
+- An example of using the MarkerCluster Leaflet plugin
+- An example of using the Turf.js buffer functionality
+
+---
+class: center
+
+<br/>
+# Discussion
+
+<br>
+#### You Pick!
+Visualization, Web Development, Learning,
+
+Deeper dive into some examples, ...
+
+<br/>
+
+    </textarea>
+    <script src="../assets/lib/remark-latest.min.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      var hljs = remark.highlighter.engine;
+    </script>
+    <script type="text/javascript">
+      var slideshow = remark.create({
+          highlightStyle: 'default',
+          highlightLanguage: 'remark',
+          ratio: "4:3"
+        }) ;
+    </script>
+  </body>
+</html>
