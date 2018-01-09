@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
-    
+
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta http-equiv="cleartype" content="on">
 
@@ -33,10 +33,10 @@
     <!-- Load Leaflet Markercluster Stylesheet -->
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.0.4/MarkerCluster.css" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.0.4/MarkerCluster.Default.css" />
-    
+
     <!-- Load Leaflet Geocoder Stylesheet -->
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/perliedman-leaflet-control-geocoder/1.5.4/Control.Geocoder.css" />
-    
+
     <!-- Load Application Stylesheets-->
     <link rel="stylesheet" href="../assets/css/app_style.css">
     <link rel="stylesheet" href="../assets/css/typography.css">
@@ -44,7 +44,7 @@
   </head>
 
   <body>
-  
+
     <main role="main">
 
       <section id="intro">
@@ -70,6 +70,11 @@
             <li>
               <span class="info">Hover over a county</span>
             </li>
+            <li>
+              <div class="dataviz count-chart">
+                <div class="chart-canvas"></div>
+              </div>
+            </li>
           </ul>
         </div>
 
@@ -80,14 +85,14 @@
 
       <hr>
 
-      <section class="dataviz count-chart">
+      <!-- <section class="dataviz count-chart">
         <div class="chart-container">
           <div class="chart-canvas"></div>
         </div>
         <div class="content">
           <h2>Reported Cases of Lyme Disease by Year</h2>
           <p>
-            The graph displays the total number of reported cases of Lyme disease from 2001 through 2014 for 
+            The graph displays the total number of reported cases of Lyme disease from 2001 through 2014 for
             <span class="location">California</span>.
           </p>
           <form id="count-chart-form">
@@ -95,8 +100,8 @@
             <input type="search" name="search" placeholder="Alameda">
             <input type="submit">
           </form>
-        </div>      
-      </section>
+        </div>
+      </section> -->
 
       <hr>
 
@@ -107,11 +112,11 @@
             The graph displays counties where the Incidence Rate of Lyme disease from 2001 - 2014 is greater than or equal to 4.0 (per 100,000 person-years)
           </p>
           <div class="chart-canvas"></div>
-        </div>      
+        </div>
       </section>
 
       <hr>
-      
+
       <section class="container flex">
         <article>
           <h3>What is Lyme disease? </h3>
@@ -140,7 +145,7 @@
             <li><a href="http://www.cdc.gov/lyme">U.S. Centers for Disease Control and Prevention</a></li>
             <li><a href="http://www.bayarealyme.org">Bay Area Lyme Foundation</a></li>
           </ul>
-        </article>   
+        </article>
       </section>
 
       <hr>
@@ -162,14 +167,14 @@
 
 
     <!-- *********************************************************************
-     Putting Javascript files towards bottom of the body is a standard recommendation 
+     Putting Javascript files towards bottom of the body is a standard recommendation
      for speeding up the apparent load time of your page
      https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Tips_for_authoring_fast-loading_HTML_pages
     **************************************************************************-->
-    
+
     <!-- Load jquery from CDN -->
     <script   src="//code.jquery.com/jquery-2.2.1.js"   integrity="sha256-eNcUzO3jsv0XlJLveFEkbB8bA7/CroNpNVk3XpmnwHc="   crossorigin="anonymous"></script>
-    
+
     <!-- Load Leaflet Javascript -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.0.4/leaflet.markercluster.js"></script>
@@ -189,17 +194,17 @@
       // Copyright (c) 2013 Ryan Clark
       // https://gist.github.com/rclark/5779673
       L.TopoJSON = L.GeoJSON.extend({
-        addData: function(jsonData) {    
+        addData: function(jsonData) {
           if (jsonData.type === "Topology") {
             for (key in jsonData.objects) {
               geojson = topojson.feature(jsonData, jsonData.objects[key]);
               L.GeoJSON.prototype.addData.call(this, geojson);
             }
-          }    
+          }
           else {
             L.GeoJSON.prototype.addData.call(this, jsonData);
           }
-        }  
+        }
       });
     </script>
 

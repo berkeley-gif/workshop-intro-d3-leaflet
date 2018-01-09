@@ -36,7 +36,7 @@
   /********************************************************************************
     ADD TICK LOCATIONS
   ********************************************************************************/
-  
+
   // Intialize a variable to holda Leaflet geoJson layer
   var tickLocations;
 
@@ -65,8 +65,8 @@
   }
 
   // Use ajax call to get data. After data comes back apply styles and bind popup
-  // If you're experienced with jQuery, you'll recognize we're making a GET 
-  // request and expecting JSON in the response body. 
+  // If you're experienced with jQuery, you'll recognize we're making a GET
+  // request and expecting JSON in the response body.
   // We're also passing in a callback function that takes the response JSON and adds it to the document.
   $.getJSON("../assets/data/tick_locations.geojson", function(data) {
 
@@ -82,7 +82,7 @@
 
     // Add tick locations layer as an overlay to layer control
     // Note: $.getJSON method is asynchronous. Although we intialize layerControl later in the code
-    // it should already exists by the time this code runs. 
+    // it should already exists by the time this code runs.
     layerControl.addOverlay(tickLocations, "Tick Collection Locations");
 
 
@@ -96,12 +96,12 @@
 
 
     /********************************************************************************
-      ADD 10 MILE BUFFER AROUND TICK LOCATIONS 
+      ADD 10 MILE BUFFER AROUND TICK LOCATIONS
     ********************************************************************************/
     var bufferFeatureCollection = turf.buffer(data, 10, 'miles');
     var buffersLayer = L.geoJson(bufferFeatureCollection);
     layerControl.addOverlay(buffersLayer, "10 Mile Buffers around Tick Collection Locations");
-  
+
 
   });
 
@@ -144,7 +144,7 @@
 
   // Overwrite the markGeocode function provided by geocoder control
   geocoder.markGeocode = function(result) {
-    
+
     // Pans map to center
     map.setView(result.center, 8);
 
@@ -159,7 +159,7 @@
       .setLatLng(result.center)
       .bindPopup(result.name || result.html)
       .addTo(map)
-      .openPopup();    
+      .openPopup();
 
   };
 
@@ -168,6 +168,41 @@
     if (map.hasLayer(geocodeMarker)){
       map.removeLayer(geocodeMarker);
     };
+  });
+
+
+  /********************************************************************************
+    LOAD ANNUAL DATA OF LYME DISEASE FOR ALL COUNTIES
+  ********************************************************************************/
+  var lymeData;
+
+  // Use d3.csv to convert a csv file into an array of objects
+  // This method is also asynchronous like jQuery's $.getJSON method
+  d3.csv("../assets/data/lyme_disease_2001-2014.csv", function(error, _data) {
+
+    data = _data;
+
+    // Convert string Year into date type and add a new attribute d.date
+    // Convert Rate into a number type add a new attribute d.value
+    data.forEach(function(d) {
+      d.date = dateFormat(d.Year);
+      d.value = +d.Count;
+    });
+
+    var stateData = data.filter( function(item) {
+      return (item.County == 'California' && item.Sex == 'Total');
+    });
+
+    // Pass attributes using the setters provided by barChart
+    countChart.width(width);
+    countChart.height(height);
+    countChart.axisLabel('Total Cases');
+
+    // Select the chart-canvas div in HTML, bind data to it, draw the chart
+    d3.select(countChartEl)
+      .datum(stateData)
+      .call(countChart);
+
   });
 
 
@@ -185,7 +220,7 @@
 
   // The code below is another way to use jQuery's $.getJSON method
   // See https://davidwalsh.name/write-javascript-promises
-  // Use the promise object returned by the $.getJSON method. 
+  // Use the promise object returned by the $.getJSON method.
   // When the response is returned, the .done method is called with the function (callback)
   // you provide. If the request fails, the .fail method is called.
   $.getJSON('../assets/data/ca_counties_census.topojson')
@@ -199,7 +234,7 @@
 
     // This is calling the addData method of the new L.TopoJSON layer we defined earlier
     countyLayer.addData(topoData);
-    
+
     // This is calling the addTo method of Leaflet's L.layerGroup
     countyLayer.addTo(map);
 
@@ -265,8 +300,8 @@
 
     // Get population density and corresponding color (hexvalue) from color scale
     var density = layer.feature.properties.lyme_disease_avg_rate_avg_rate_2001_2014;
-    var fillColor = colorScale(density).hex();  
-    
+    var fillColor = colorScale(density).hex();
+
     // Style polygons
     layer.setStyle({
       fillColor : fillColor,
@@ -275,10 +310,11 @@
       weight:2,
       opacity:.5
     });
-    
+
     // Attach events to each polygon
     layer.on({
-      mouseover: enterLayer,
+      //mouseover: enterLayer,
+      click: clickLayer,
       mouseout: leaveLayer,
     });
 
@@ -300,12 +336,12 @@
       weight:3,
       opacity: 1
     });
-    
+
     /********************************************************************************
     SPATIAL ANALYSIS IN YOUR BROWSER
     ********************************************************************************/
 
-    // Many turf functions expect a featurecollection. 
+    // Many turf functions expect a featurecollection.
     // Use turf's featurecollection helper method to convert our geojson feature into a
     // featurecollection
     var countyGeojson = turf.featureCollection([county]);
@@ -322,6 +358,42 @@
 
   }
 
+  // Function fired when user's mouse enters the layer
+  function clickLayer(){
+
+    var county = this.feature;
+
+    // Get county name and pop. density and create a new html string
+    var countyName = county.properties.CountyNAME;
+    var rate = +county.properties.lyme_disease_avg_rate_avg_rate_2001_2014;
+    var html = '<b>' + countyName + '</b><br/>' +'Incidence rate is ' + rate.toFixed(1) + ' per 100,000 person-years';
+
+    // Change style of polygon
+    this.setStyle({
+      weight:3,
+      opacity: 1
+    });
+
+    /********************************************************************************
+    SPATIAL ANALYSIS IN YOUR BROWSER
+    ********************************************************************************/
+
+    // Many turf functions expect a featurecollection.
+    // Use turf's featurecollection helper method to convert our geojson feature into a
+    // featurecollection
+    var countyGeojson = turf.featureCollection([county]);
+
+    // Count number of tick locations within county
+    var ptsWithin = turf.within(tickLocations.toGeoJSON(), countyGeojson);
+    var count = ptsWithin.features.length;
+
+    // Add count to html string
+    html = html + '<br/>' + count + ' tick collection locations';
+
+    // Append html string to p element with .info class
+    $('.info').html(html);
+
+  }
 
   // Function fired when user's mouse leaves the layer
   function leaveLayer(){
@@ -342,7 +414,7 @@
   var dateFormat = d3.timeParse("%Y"); // Function for parsing date
   var data;
 
-  // Create an instance of a barChart 
+  // Create an instance of a barChart
   // Neither data nor selection has yet been passed to the chart, so nothing will
   // actually happen based upon this function call
   var countChart = barChart();
@@ -369,7 +441,7 @@
     countChart.height(height);
     countChart.axisLabel('Total Cases');
 
-    // Select the chart-canvas div in HTML, bind data to it, draw the chart  
+    // Select the chart-canvas div in HTML, bind data to it, draw the chart
     d3.select(countChartEl)
       .datum(stateData)
       .call(countChart);
