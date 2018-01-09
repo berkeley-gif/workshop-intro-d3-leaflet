@@ -69,7 +69,7 @@ em, i {
 }
 
 p {
-  margin: 0 0 2rem 0;
+  margin: 0 0 1rem 0;
 }
 
   p.major {
@@ -157,7 +157,7 @@ pre {
 hr {
   border: 0;
   border-bottom: solid 1px;
-  margin: 2.5rem 0;
+  margin: 1rem 0;
 }
 
   hr.major {

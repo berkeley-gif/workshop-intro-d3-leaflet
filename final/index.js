@@ -174,35 +174,21 @@
   /********************************************************************************
     LOAD ANNUAL DATA OF LYME DISEASE FOR ALL COUNTIES
   ********************************************************************************/
-  var lymeData;
+  var lymeData; // a variable to store reference to the data, used later
 
   // Use d3.csv to convert a csv file into an array of objects
   // This method is also asynchronous like jQuery's $.getJSON method
   d3.csv("../assets/data/lyme_disease_2001-2014.csv", function(error, _data) {
 
-    data = _data;
+    lymeData = _data;
 
     // Convert string Year into date type and add a new attribute d.date
     // Convert Rate into a number type add a new attribute d.value
-    data.forEach(function(d) {
+    lymeData.forEach(function(d) {
       d.date = dateFormat(d.Year);
       d.value = +d.Count;
     });
-
-    var stateData = data.filter( function(item) {
-      return (item.County == 'California' && item.Sex == 'Total');
-    });
-
-    // Pass attributes using the setters provided by barChart
-    countChart.width(width);
-    countChart.height(height);
-    countChart.axisLabel('Total Cases');
-
-    // Select the chart-canvas div in HTML, bind data to it, draw the chart
-    d3.select(countChartEl)
-      .datum(stateData)
-      .call(countChart);
-
+    console.log(lymeData);
   });
 
 
@@ -313,50 +299,12 @@
 
     // Attach events to each polygon
     layer.on({
-      //mouseover: enterLayer,
       click: clickLayer,
       mouseout: leaveLayer,
     });
 
   }
 
-
-  // Function fired when user's mouse enters the layer
-  function enterLayer(){
-
-    var county = this.feature;
-
-    // Get county name and pop. density and create a new html string
-    var countyName = county.properties.CountyNAME;
-    var rate = +county.properties.lyme_disease_avg_rate_avg_rate_2001_2014;
-    var html = '<b>' + countyName + '</b><br/>' +'Incidence rate is ' + rate.toFixed(1) + ' per 100,000 person-years';
-
-    // Change style of polygon
-    this.setStyle({
-      weight:3,
-      opacity: 1
-    });
-
-    /********************************************************************************
-    SPATIAL ANALYSIS IN YOUR BROWSER
-    ********************************************************************************/
-
-    // Many turf functions expect a featurecollection.
-    // Use turf's featurecollection helper method to convert our geojson feature into a
-    // featurecollection
-    var countyGeojson = turf.featureCollection([county]);
-
-    // Count number of tick locations within county
-    var ptsWithin = turf.within(tickLocations.toGeoJSON(), countyGeojson);
-    var count = ptsWithin.features.length;
-
-    // Add count to html string
-    html = html + '<br/>' + count + ' tick collection locations';
-
-    // Append html string to p element with .info class
-    $('.info').html(html);
-
-  }
 
   // Function fired when user's mouse enters the layer
   function clickLayer(){
@@ -393,11 +341,13 @@
     // Append html string to p element with .info class
     $('.info').html(html);
 
+    // Add D3 barchart
+    renderChart(countyName.replace(' County', ''));
+
   }
 
   // Function fired when user's mouse leaves the layer
   function leaveLayer(){
-    $('.info').text('Hover over a county');
     this.setStyle({
       weight:2,
       opacity:.5
@@ -409,8 +359,8 @@
     ADD A REUSABLE D3 CHART
   ********************************************************************************/
   var countChartEl = document.querySelector('.count-chart .chart-canvas');
-  var width = countChartEl.offsetWidth;
-  var height = countChartEl.offsetHeight || 300;
+  var width = countChartEl.offsetWidth || 300;
+  var height = countChartEl.offsetHeight || 200;
   var dateFormat = d3.timeParse("%Y"); // Function for parsing date
   var data;
 
@@ -419,22 +369,11 @@
   // actually happen based upon this function call
   var countChart = barChart();
 
-  // Use d3.csv to convert a csv file into an array of objects
-  // This method is also asynchronous like jQuery's $.getJSON method
-  d3.csv("../assets/data/lyme_disease_2001-2014.csv", function(error, _data) {
-
-    data = _data;
-
-    // Convert string Year into date type and add a new attribute d.date
-    // Convert Rate into a number type add a new attribute d.value
-    data.forEach(function(d) {
-      d.date = dateFormat(d.Year);
-      d.value = +d.Count;
+  function renderChart(county) {
+    var countyData = lymeData.filter(function(item) {
+      return (item.County == county && item.Sex == 'Total');
     });
-
-    var stateData = data.filter( function(item) {
-      return (item.County == 'California' && item.Sex == 'Total');
-    });
+    console.log(countyData);
 
     // Pass attributes using the setters provided by barChart
     countChart.width(width);
@@ -443,56 +382,26 @@
 
     // Select the chart-canvas div in HTML, bind data to it, draw the chart
     d3.select(countChartEl)
-      .datum(stateData)
+      .datum(countyData)
       .call(countChart);
+  }
 
-  });
 
 
-  // Add a form to search for and filter data by County Names
-  // Update the same chart with new selection
-  var searchBtn = document.querySelector('#count-chart-form input[type="submit"]');
-  var searchStr = document.querySelector('#count-chart-form input[type="search"]');
-  var locationName = document.querySelector('.count-chart .location');
-
-  searchBtn.addEventListener('click', function(e){
-    e.preventDefault();
-    e.stopPropagation();
-
-    var county = searchStr.value;
-    locationName.innerHTML = county;
-    var countyData = data.filter( function(item) {
-      return (item.County == county && item.Sex == 'Total');
+  function createPolygonViz (data) {
+    var counties = topojson.feature(data, data.objects.ca_counties_census2);
+    counties.features.forEach(function(feature){
+      var rate = +feature.properties['lyme_disease_avg_rate_avg_rate_2001_2014'];
+      var name = feature.properties['CountyNAME'];
+      if (rate >= 4) {
+        var countyPolygon = drawPolygon()
+          .data(feature);
+        d3.select(".polygons-chart .chart-canvas")
+          .call(countyPolygon);
+      }
     });
 
-   if (countyData.length !== 0) {
-      searchStr.style.color = 'inherit';
-      d3.select(countChartEl)
-        .datum(countyData)
-        .call(countChart);
-   } else {
-      searchStr.style.color = 'red';
-   }
-
-  });
-
-
-
-
-function createPolygonViz (data) {
-  var counties = topojson.feature(data, data.objects.ca_counties_census2);
-  counties.features.forEach(function(feature){
-    var rate = +feature.properties['lyme_disease_avg_rate_avg_rate_2001_2014'];
-    var name = feature.properties['CountyNAME'];
-    if (rate >= 4) {
-      var countyPolygon = drawPolygon()
-        .data(feature);
-      d3.select(".polygons-chart .chart-canvas")
-        .call(countyPolygon);
-    }
-  });
-
-}
+  }
 
 
 
