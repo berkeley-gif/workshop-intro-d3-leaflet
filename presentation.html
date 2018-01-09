@@ -11,16 +11,23 @@
     .remark-code, .remark-inline-code {
       font-family: "Inconsolata", "Courier";
     }
+    .remark-slide-content > ul li ul li {
+      font-size: 18px;
+    }
     .ex {
       background-color: #E3E7F0;
       color: black;
       padding-left: 5px;
     }
-    #slide-function .left-column {
+    .left-column {
       width: 50%;
     }
-    #slide-function .right-column {
+   .right-column {
       width: 50%;
+    }
+    #slide-roadmap .left-column,
+    #slide-roadmap .right-column {
+      margin-top: -3rem;
     }
     #slide-databinding #circle {
       width: 40px;
@@ -94,12 +101,11 @@ class: center
 ## What is Data Visualization?
 
 - Graphical display of abstract information for communication and sense-making
-- Modern equivalent of Visual Communication
 
 ## Goals
 
 - Using graphics with or without explanatory texts for .bold[Communication]
-- Displaying data for .bold[Analysis]
+- Displaying data for exploratory .bold[Analysis]
 - [The Changing Goals of Data Visualization](https://eagereyes.org/criticism/changing-goals-data-visualization)
 
 ???
@@ -269,10 +275,13 @@ See how the foreign-born density of counties in the US changes over time. Green 
 Definition of generative. : having the power or function of generating, originating, producing, or reproducing.
 ---
 ## Optionally...
-- Use software and data visualization servies like Tableau, Excel, Qlik Sense, Datawrapper, Raw
-- GIS Software
-- Use R or Python and associated visualization packages such as ggvis, rCharts, and Shiny
-  - Create interactive graphics but less customization options and/or limited pre-existing graphics types (e.g., bar charts).
+- Software
+  - Tableau, Excel, GIS software
+- Data visualization servies
+  - [Datawrapper](https://www.datawrapper.de/), [RAW Graphs](http://rawgraphs.io/)
+- R or Python
+  - Associated visualization packages such as ggvis, rCharts, and Shiny
+- Create interactive graphics but less customization options and/or limited pre-existing graphics types (e.g., bar charts).
 ---
 class: img100
 ## Visualizing Friendships - R
@@ -298,22 +307,37 @@ The dots are proportionally sized by the amount of time over the past five yea
 class: center
 
 <br/>
-# Whirlwind Introduction to Web Technology
+# Whirlwind Introduction to Web Development
 <br/>
 
 ---
-## Technology Considerations
+class: img100
+name: roadmap
 
+## Roadmap for Learning Web Development
+
+.footnote[[Link](https://github.com/kamranahmedse/developer-roadmap)]
+
+![](../assets/images/frontend-roadmap-intro.png)
+.left-column[
 - Frontend
   - HTML5, CSS3, JavaScript
   - Frontend frameworks
   - SVG, Canvas, WebGL
-  - Mobile
-
+]
+.right-column[
 - Backend
   - Python, Java
   - Backend frameworks
   - Web Servers
+]
+
+---
+class: center
+
+.footnote[[Link](https://github.com/kamranahmedse/developer-roadmap)]
+
+![](../assets/images/frontend-roadmap.png)
 
 ---
 ## Quick Start Technology Stack
@@ -323,7 +347,7 @@ class: center
   - CARTO
   - MapBox
   - Google
-  - Tableau, RStudio
+  - Tableau, RStudio, [Datawrapper](https://www.datawrapper.de/), [RAW Graphs](http://rawgraphs.io/)
 
 - Embed widgets into your own website
 
@@ -331,7 +355,8 @@ class: center
 ## Hybrid Technology Stack
 
 - Don’t want to maintain database/mapping servers?
-  - Use data and other web services from ArcGIS Online, CARTO, MapBox, Google, etc.
+  - Use data from Web API's
+  - Use web services from ArcGIS Online, CARTO, MapBox, Google, etc.
   - Build custom user interface with JavaScript libraries
 
 - Don’t want to write Javascript/HTML/CSS?
@@ -345,30 +370,18 @@ class: center
 
 ![](../assets/images/custom-tech-stack.png)
 ---
-## Where to begin?
+## Quick Review
 
-- Tools: Code Editor, Browser & Browser's Developer Tools
+- Client & Server
+- Web Developer Tools
 - HTML
 - CSS
 - DOM
 - JavaScript
-- Web formats for displaying graphics: SVG and Canvas
-
-<!--NEXT SLIDE -->
----
-## Tools for Web Development
-
-- Code Editor
-  - Sublime Text, Atom, PyCharm, Vim, Notepad++, IDLE, Gedit, TextMate
-  - Syntax highlighting, indentation, autocomplete, bracket matching
-  - Run interpreters, debuggers
-
-- Browser
-  - Developer Tools - press `Ctrl+Shift+I` (or `F12`) in Chrome
-  - More info on Chrome Developer tools [here](https://developers.google.com/web/tools/chrome-devtools/)
+- Web Graphic Formats - SVG and Canvas
 
 ---
-## Quick Review of Client & Server
+## Client & Server
 
 ![](../assets/images/HTTP_Steps.png)
 
@@ -380,10 +393,25 @@ class: center
 When a link is clicked, the browser creates an .em[HTTP Get Request] that is sent to the server. Server responds. Browser displays the page. Sees that it needs a few more things - e.g. images, fonts, other files. Browser sends new a GET request for each item. Server sends response for each request with status code (200 - found, 304 - retrieving from browser cache, 404 - not found, 500 - server error )
 
 ---
+## Web Developer Tools
+
+- Code Editor
+  - Sublime Text, Atom, PyCharm, Vim, Notepad++, IDLE, Gedit, TextMate
+  - Syntax highlighting, indentation, autocomplete, bracket matching
+  - Run interpreters, debuggers
+
+- Browser
+  - Developer Tools - press `Ctrl+Shift+I` (or `F12`) in Chrome
+  - More info on Chrome Developer tools [here](https://developers.google.com/web/tools/chrome-devtools/)
+
+- [Github](https://guides.github.com/activities/hello-world/)
+  - Code hosting platform for version control and collaboration
+
+---
 ### Hyper Text Markup Language (HTML)
 
 - HTML is not a programming language; it is a markup language
-- Role &raquo; Describes content
+- .bold[Role &raquo; Describes content]
 - HTML Elements consist of a opening tag, the content, and a closing tag
 
 ![](../assets/images/grumpy-cat-small.png)
@@ -407,7 +435,7 @@ HTML and its DOM model, of course, provide the foundation on which any web based
 ## Cascading Style Sheet (CSS)
 
 - Not a programming or markup language
-- Role &raquo; Describes presentation of a document written in HTML or XML (e.g. SVG)
+- .bold[Role &raquo; Describes presentation of a document written in HTML or XML (e.g. SVG)]
 - Selectors, properties, and values
 - Properties and Attributes
   ```xml
@@ -433,7 +461,7 @@ name: dom
 
 ## Document Object Model (DOM)
 
-- Structured representation of the document (a tree) created by the browser
+- .bold[Structured representation of the document (a tree) created by the browser]
 - HTML you write is parsed by the browser and turned into the DOM
 - Programming interface for HTML and SVG documents
 - JavaScript manipulates the DOM
@@ -486,10 +514,10 @@ Understanding the DOM helps you design, debug and maintain your CSS because the 
 ## JavaScript
 
 - "Easy to learn, hard to master"
-- Role &raquo; Creating interaction
+- .bold[Role &raquo; Creating interaction]
 - Interpreted by your browser
 - Asychronous (code executes in background after client-browser recieves data from server)
-- Get familiar with
+- Get familiar with:
     - Working with json objects
     - Array functions (forEach, filter, map)
     - Method chaining, Callbacks, Closures, Modules
@@ -566,19 +594,38 @@ What does that mean? Well, when you create an SVG element using markup like <svg
 
 ---
 
-## Codepen.io
+## HTML, CSS and JavaScript playgrounds
 
-- Playground for the front-end web developmet
+- [Codepen](codepen.io), [JSFiddle](https://jsfiddle.net/), [JS Bin](https://jsbin.com/?html,js,output)
 
-- Open this [link](https://codepen.io/mukhtyar/project/editor/XaboqA/) in a new tab to explore how HTML, CSS and JavaScript work together.
+- Open this [Codepen link](https://codepen.io/mukhtyar/project/editor/XaboqA/) in a new tab to explore how HTML, CSS and JavaScript work together.
 
-- Some other playgrounds
-  - [JSFiddle](https://jsfiddle.net/)
-  - [JS Bin](https://jsbin.com/?html,js,output)
-  - [Blockbuilder - D3](http://blockbuilder.org/)
+- In-browser code editor built for creating and sharing d3.js examples
+  - [Blockbuilder](http://blockbuilder.org/)
+  - Integrated with Github and bl.ocks.org
+
+- Or set up a local testing server on your machine
 
 ???
 At CodePen.io, they describe themselves as a “playground for the front-end side of the web.” CodePen is great for testing out bugs, collaborating, and finding new inspiration. It works by allowing you to create “pens”, which are sets of HTML, CSS, and JavaScript.
+---
+## Start a local testing server and review final project
+
+- Set up a simple local HTTP server on Windows
+  - [How do you set up a local testing server?](https://developer.mozilla.org/en-US/docs/Learn/Common_questions/set_up_a_local_testing_server)
+  - Python library comes with a `SimpleHTTPServer` module
+  - For today we will use Python installed by ArcGIS on the lab computers
+
+- Open Windows Command Prompt
+- Change directory to the workshop folder
+  ```javascript
+    cd Documents/workshop-intro-d3-leaflet
+  ```
+- Start the local server using python library installed by ArcGIS
+  ```javascript
+    C:\Python27\ArcGIS10.4\python -m SimpleHTTPServer
+  ```
+- Open a browser. Type `localhost:8000` into the url bar at top. You should see a list of directories & files. Click on the `final` directory
 ---
 ## Web Development Resources
 
@@ -595,25 +642,6 @@ At CodePen.io, they describe themselves as a “playground for the front-end sid
 - [Egghead.io](https://egghead.io/) - Bite size web dev video training
 - Lynda.com, Frontend Masters, CodeAcademy, Udacity, Coursera, etc.
 
-
----
-## Review final product
-
-- Set up a simple local HTTP server on Windows
-  - [How do you set up a local testing server?](https://developer.mozilla.org/en-US/docs/Learn/Common_questions/set_up_a_local_testing_server)
-  - Python library comes with a `SimpleHTTPServer` module
-  - For today we will use Python installed by ArcGIS on the lab computers
-
-- Open Windows Command Prompt
-- Change directory to the workshop folder
-  ```javascript
-    cd Documents/workshop-intro-d3-leaflet
-  ```
-- Start the local server using python library installed by ArcGIS
-  ```javascript
-    C:\Python27\ArcGIS10.4\python -m SimpleHTTPServer
-  ```
-- Open a browser. Type `localhost:8000` into the url bar at top. You should see a list of directories/files. Click on the `final` directory
 ---
 class: center
 
@@ -713,7 +741,7 @@ Unfortunately, D3 also has a bit of a reputation as being hard to learn, but it 
 d3.selectAll('p').style('color', 'red');
 ```
 
-- Example: [JS Fiddle](https://jsfiddle.net/mukhtyar/ssdmr02s/)
+- Example: [JS Fiddle](https://jsfiddle.net/ssdmr02s/)
 
 ---
 ## Core Concepts - Selections
