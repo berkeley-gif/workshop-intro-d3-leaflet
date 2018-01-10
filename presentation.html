@@ -136,6 +136,16 @@ class: center
 ???
 how the visualization method is defined by a combination of the basic questions and the structure of the dataset.
 ---
+## Today's goal
+
+- What kind of visulizaion to build? <span>&#10007;</span>
+ - [Book list](https://www.visualcinnamon.com/resources/learning-data-visualization/books)
+ - Alberto Cairo, Edward Tufte, Stephen Few, Tamara Munzner, Cole Nussbaumer Knaflic, Andy Kirk
+
+- How do you go about building the visualization you want? <span>&#10004;</span>
+
+
+---
 ## Why publish on the web?
 
 - Fastest way to reach a larger audience
@@ -741,83 +751,29 @@ Unfortunately, D3 also has a bit of a reputation as being hard to learn, but it 
 d3.selectAll('p').style('color', 'red');
 ```
 
-- Example: [JS Fiddle](https://jsfiddle.net/ssdmr02s/)
+- Example: [D3- Declarative API](http://blockbuilder.org/mukhtyar/89e0407a1828d59c72e7)
 
 ---
 ## Core Concepts - Selections
 
 - D3 provides shorthand for selecting and manipulating DOM objects (similar to jQuery)
 
-```javascript
-// Anywhere on the page, one or multiple items
-d3.select('#hero');       // selects the element with an id="foo" attribute
-d3.selectAll('.primary'); // selects all elements with CSS class primary
-d3.selectAll('p');     // select all divs on the page
-
-// Within an existing selection
-d3.select('#hero').selectAll('p');
-```
+  - .bold[d3.select()], .bold[d3.selectAll()]
 
 - Create/Read/Update/Delete (CRUD) properties of selections
 - Getters and setters
-- .bold[selection.attr(name[, value])]
+  - .bold[selection.attr(name[, value])]
+  - .bold[selection.style(name[, value])]
+  - .bold[selection.classed(name[, value])]
+  - .bold[selection.text(name[, value])]
+  - .bold[selection.html(name[, value])]
 
-```javascript
-d3.select('a').attr('href'); // get the href value of the first link on the page
-d3.select('a').attr('href', 'http://cal-adapt.org'); // set the first link's href to Cal-Adapt
-```
-
-```javascript
-d3.selectAll('p').attr('href', function(d, i, nodes) {
-  // the first parameter is named d and is the node's data point, or datum
-  // the second parameter is named i and is the node's index in the selection
-  // the third parameter is an array of the nodes in the selection
-})
-```
+- Example: [D3 - Selections](http://blockbuilder.org/mukhtyar/e2e2d41f9828ea4459e0161878cf8f40)
 
 ???
 Methods as dual purpose getters and setters is something you will see and use a lot. selection.attr is for working with element attributes. When calling selection.attr(name) the method will act as a getter and return the name attribute's value. selection.attr(name, value) will cause the method to act as a setter, assigning value to the name attribute.
-
-Lastly, `this` === nodes[i], the function is bound to the DOM element, so `this` refers to the actual node
-
-you will see this everywhere
 ---
 ## Core Concepts - Selections (contd.)
-
-- .bold[selection.style(name[, value])]
-
-```javascript
-d3.select('a').style('color'); // get the text color of the first link
-d3.select('a').style('color', 'red'); // set the first link's text color to red
-d3.select('a').style('color', function(d, i, nodes) {
-  return getColorByURL(this.href); // this is the native DOM element
-});
-```
-
-- .bold[selection.classed(names[, value])]
-
-```javascript
-d3.select('#submitBtn').classed('btn-lg'); // does submitBtn's classList include btn-lg?
-d3.select('#submitBtn').classed('btn btn-lg', true); // apply the btn and btn-lg classes
-d3.selectAll('button').classed('btn', function(d, i, nodes) {
-  return i < 3; // apply the btn class to the first 3 buttons
-});
-```
-```javascript
-// selection.classed similar to selection.attr('class'[, value])
-selection.attr('class', 'btn btn-lg')
-```
----
-## Core Concepts - Selections (contd.)
-
-- .bold[selection.text([value]) && selection.html([value])]
-
-```javascript
-d3.select('#someDiv').text(); // get the innerText of #someDiv
-d3.select('#someDiv').text('Hello World!'); // set the innerText of #someDiv
-d3.select('#someDiv').html(); // get the innerHTML of #someDiv
-d3.select('#someDiv').html('<h2>Hello World!</h2>'); // set the innerHTML of #someDiv
-```
 
 - .bold[selection.append(type) && selection.insert(type[, before])]
 
@@ -837,39 +793,25 @@ d3.select('body').remove('p');
 d3.selectAll('button').on('click', handleButtonClicks);
 d3.select('body').on('mousemover', trackMousePosition);
 ```
+
+- Read documentation [d3-selection](https://github.com/d3/d3-selection)
 ---
-## Core Concepts - Data Joins
+## Core Concepts - Data Binding
 
 - Real power of D3 is joining data and selections
 - .bold[selection.data()] - accepts an array of data items and joins them to the DOM elements in the selection
 
-```javascript
-<div id="chart">
-  <div></div>
-  <div></div>
-  <div></div>
-  <div></div>
-  <div></div>
-</div>
-```
+- Example: [D3 - Data Binding 1](http://blockbuilder.org/mukhtyar/1e6652ca51b77c78e4567874137ebc01)
 
-```javascript
-const data = [90, 70, 50, 30, 10];
-
-d3.select('#chart')
-  .selectAll('div')
-  .data(data) // pair each number in the array with an empty div
-    .attr('class', 'bar') // color, height, and spacing via CSS
-    .style('width', function(d) {
-      return d + 'px' // use the data items as pixel widths
-    });
-```
+- Example with SVG: [D3 - Data Binding 2](http://blockbuilder.org/mukhtyar/182862bdc1cce6f3c19cf5bc657c209c)
 
 ???
 But when it comes to controlling a document or visualization based on underlying data, D3's power and expressiveness are truly unparalleled.
 The fundamental API for this is selection.data which accepts an array of data items and joins them to the DOM elements in the selection.
 ---
-## Core Concepts - Data Joins (contd.)
+## Core Concepts - Data Binding (contd.)
+
+- What if we have more data than existing elements? Enter...
 
 - ENTER, UPDATE and EXIT SELECTIONS
   - Mike Bostock - [Thinking with Joins](https://bost.ocks.org/mike/join/)
@@ -878,90 +820,14 @@ The fundamental API for this is selection.data which accepts an array of data it
 
 ![](../assets/images/data-join.png)
 
+- Example: [D3 - Enter Selection](http://blockbuilder.org/mukhtyar/182862bdc1cce6f3c19cf5bc657c209c)
+
 ---
-## Core Concepts - Data Joins (contd.)
-
-- .bold[selection.data()] is followed by .bold[selection.enter()] and .bold[selection.append()]
-
-```javascript
-<div id="chart">
-</div>
-```
-
-```javascript
-const data = [90, 70, 50, 30, 10];
-
-d3.select('#chart')
-  .selectAll('div')
-  .data(data) // returns an empty selection
-  .enter()
-    .append('div')
-    .attr('class', 'bar') // color, height, and spacing via CSS
-    .style('width', function(d) {
-      return d + 'px' // use the data items as pixel widths
-    });
-```
----
-## Core Concepts - Data Joins (contd.)
+## Core Concepts - Data Binding (contd.)
 
 - Use with dynamic data
 
-```javascript
-const data = [
-  { name: 'Alice', math: 93, science: 84 },
-  { name: 'Bobby', math: 81, science: 97 },
-  { name: 'Carol', math: 74, science: 88 },
-  { name: 'David', math: 64, science: 76 },
-  { name: 'Emily', math: 80, science: 94 }
-];
-
-function render(subject) {
-  d3.select('#chart') // within the #chart container...
-    .selectAll('div') // select all the divs
-    .remove();         // and remove them, clearing the #chart div
-
-  // now just repeat our creation pattern from the first example
-  d3.select('#chart')
-  .selectAll('div')
-  .data(data)
-  .enter()
-    .append('div')
-    .attr('class', 'bar')
-    .style('width', function(d) {
-      return d[subject] + 'px' // use the subject passed in to grab the correct property
-    });
-}
-
-render('math'); // render the math data when the page first loads
-```
----
-## Core Concepts - Data Joins (contd.)
-
-- Use .bold[selection.transition()] to animate
-
-```javascript
-function render(subject) {
-  // store a reference to the bars already on the chart
-  const bars = d3.select('#chart')
-    .selectAll('div') // this won't be empty after the first time this function runs
-    .data(data, function(d) {
-      return d.name // use the name property to match across updates
-    });
-
-  const newBars = bars.enter() // use the enter selection
-    .append('div') // to add new bars for any data items without an existing DOM element
-      .attr('class', 'bar')
-      .style('width', 0); // set the initial width to 0
-
-  // combine the selections of new and existing bars
-  // so you can act on them together
-  newBars.merge(bars)
-    .transition() // animate everything that comes after this line!
-    .style('width', function(d) {
-      return d[subject] + 'px' // set the width like normal!
-    });
-}
-```
+- Example: [D3 - Enter, Update, Exit](http://blockbuilder.org/mukhtyar/2eaf29426bdc09a328fd7666a01310df)
 
 ---
 ## Core Concepts - Scales
@@ -1151,81 +1017,21 @@ class: center
 ## Web Services
 
 - APIs (Application Programming Interface )
-  - Basemaps, Data, Geocoding, Navigation, Spatial Analysis • Commercial
-  - Google, ESRI, CARTO, MapBox, Planet ... many more – Free and paid tiers
+  - Basemaps, Data, Geocoding, Navigation
 
-- Non-commercial
+- Commercial and non-commercial data and service providers
+  - OpenStreetMap
+  - Google, ESRI, CARTO, MapBox, Planet ... many more – Free and paid tiers
   - Data.gov, NPMap, SF Open Data, NASA
   - Cal-Adapt, Landcarbon, Ecoengine @berkeleyGIF
-
----
-## Open Data
-
-- Free
-- Limited or no copyright restrictions
-- Contributed by government, researchers, non-profits, citizens
-  - World Bank, OpenStreetMap, NASA
-- Pay attention to:
-  - Attribution requirements
-  - Restrictions on redistribution
-  - Data Quality
-
----
-## Data - OpenStreetMap
-
-- Collaborative project to create a free and editable map of the world
-- Volunteered geographic information
-- Primary output = DATA not the map
-- Open Database License (ODBL)
-  - License/Use cases
-- Getting the data (planet.osm.org & other)
-  - Planet extract (666 GB uncompressed; 30-40 GB compressed)
-  - Smaller extracts for countries, metro areas available
-  - Updated regularly
-  - Tools for importing into PostgreSQL/PostGIS
-
 ---
 ## Open Standards
 
 - Data Formats
   - GeoJSON, TopoJSON, KML, Shapefile, WaterML, NetCDF...
+
 - Specifications
   - Web Map Services, Web Feature Services, Vector Tiles
-
----
-## Open Standards - GeoJSON
-
-- File format for spatial data common on the web
-- Subset of JSON format (JavaScript Object Notation)
-- Converting to GeoJSON
-  - GDAL, geojson.io, fiona (python package), QGIS, ArcGIS
-- TopoJSON
-  - Extension that encodes topology – More compact than GeoJSON
-
----
-## Open Standards - Vector Tiles
-
-- Instead of raster images data is returned in vector format
-- More efficient
-- Contains
-  - Data and geometry
-  - Instructions on styling, instructions on stitching data back together
-- Style on the fly in browser instead of server (no need to pre- render)
-- Formats
-  - Mapbox Vector Tile (MVT), GeoJSON/TopoJSON vector tiles
-
----
-## FOSS (Free and Open Source Software)
-
-- Dekstop
-  - GRASS, QGIS
-- Geo-enabled databases
-  - PostgreSQL/PostGIS
-- Software for exposing spatial data to the web
-  - MapServer, Mapnik, GeoServer, Tilecache
-- JavaScript mapping and data visualization libraries
-- System libraries
-  - GDAL, PROJ4
 
 ---
 ## Leaflet
@@ -1310,7 +1116,7 @@ class: center
 
 
 ---
-## Exercise 01 - Make a map
+## Exercise 01 - Make a map, add basemap
 
 - This exercise covers the basics for creating a Leaflet map element and adding a basemap to it.
 
@@ -1322,36 +1128,13 @@ class: center
 
 ---
 
-## Exercise 02 - Add Overlay
+## Exercise 02 - Add and style data
 
-- Adding an overlay of tick collection point locations
-
----
-
-## Exercise 03 - Style Overlay
-
-- Experiment with applying custom styles to geojson overlay
-
-- Leaflet allows you to pass a variety of options to `L.geoJson` to style your layer. The options are written as [callback functions](http://www.impressivewebs.com/callback-functions-javascript/).
-
-- An example of a callback function
-
-```javascript
-  // Callback Example
-
-  function mySandwich(param1, param2, callback) {
-    alert('Started eating my sandwich.\n\nIt has: ' + param1 + ', ' + param2);
-    callback();
-  }
-
-  mySandwich('ham', 'cheese', function() {
-    alert('Finished eating my sandwich.');
-  });
-```
+- Add an overlay of tick collection point locations and style it
 
 ---
 
-## Exercise 04 - Working with Larger Datasets
+## Exercise 03 - Working with Larger Datasets
 
 - Geojson files with lots of data can take longer to load depending on size and network speed. And on the web you never want to keep your user waiting :-) There are couple of ways you can deal with larger files.
 
@@ -1364,28 +1147,15 @@ class: center
 
 ---
 
-## Exercise 05 - Add a Leaflet plugin for Geocoding
+## Review Final Project with Leaflet Map and D3 chart
 
-- Huge list of [Leaflet plugins](http://leafletjs.com/plugins.html) to extend functionality.
+- In browser go to `localhost:8000/final`
 
-- We will add a geocoding plugin called [Leaflet Control Geocoder](https://github.com/perliedman/leaflet-control-geocoder)
-
----
-
-## Exercise 06 - Spatial Analysis in your Browser
-
-- Experiment with doing some spatial analysis directly in your browser using Turf.js
-
-- [Turf.js](http://turfjs.org/) is a javascript library for spatial analysis. MapBox has a great intro on using Turf that you can check out [here](https://www.mapbox.com/help/intro-to-turf/).
-
----
-
-## Leaflet Review
-
-- Adding content and styling to make it look like a real website
-- Adding legends
-- An example of using the MarkerCluster Leaflet plugin
-- An example of using the Turf.js buffer functionality
+Additions
+  - Content and styling
+  - Legend
+  - An example of using the Turf.js library for spatial analysis
+  - Integrated D3 bar chart
 
 ---
 class: center

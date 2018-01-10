@@ -26,11 +26,12 @@
   
   <main role="main">
     <section class="container">
-      <h2>03 - Style Overlay</h2>
+      <h2>04 - Working with Larger Datasets</h2>
       
       <!-- Map panel -->
       <div id="map"></div>
 
+      <div class="info" style="height: 3em;">Hover over a county</div>
       <a href="../index.html">Back to Working</a>
     </section>
   </main>
@@ -45,6 +46,35 @@
     
     <!-- Load Leaflet Javascript -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js"></script>
+
+    <!-- Load TopoJSON from CDN -->
+    <!-- TopoJSON is an extension of GeoJSON that encodes topology -->
+    <!-- https://github.com/mbostock/topojson/wiki -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.20/topojson.js"></script>
+
+    <!-- Javascript code for extending Leaflet's L.geoJson layer to read topojson files -->
+    <script>
+      // Copyright (c) 2013 Ryan Clark
+      // https://gist.github.com/rclark/5779673
+      L.TopoJSON = L.GeoJSON.extend({
+        addData: function(jsonData) {    
+          if (jsonData.type === "Topology") {
+            for (key in jsonData.objects) {
+              geojson = topojson.feature(jsonData, jsonData.objects[key]);
+              L.GeoJSON.prototype.addData.call(this, geojson);
+            }
+          }    
+          else {
+            L.GeoJSON.prototype.addData.call(this, jsonData);
+          }
+        }  
+      });
+    </script>
+
+    <!-- Load chroma.js from CDN -->
+    <!-- JavaScript library for all kinds of color manipulations -->
+    <!-- http://gka.github.io/chroma.js/ -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/chroma-js/0.5.9/chroma.min.js"></script>
 
     <!-- Javascript code for your app goes in between script tags below -->
     <script src="solution.js"></script>

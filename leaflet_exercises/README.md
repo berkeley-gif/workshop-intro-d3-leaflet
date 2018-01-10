@@ -8,7 +8,7 @@ Although you can just open your HTML file in any browser and view it, when you a
     - These operating systems come with Python already installed. Python has a module called [SimpleHTTPServer](http://www.pythonforbeginners.com/modules-in-python/how-to-use-simplehttpserver/) which you can use when you need a quick web server running and you don't want to mess with setting up Apache/Ngnix.
     - Open a Terminal. Change directory to the workshop folder. Start a local server using Python.
     ```
-        > cd Documents/Bootcamp/Day_3/Web_Apps_with_Leaflet_and_D3/
+        > cd Documents/workshop-intro-d3-leaflet/
         > python -m SimpleHTTPServer
     ```
 
@@ -17,7 +17,7 @@ Although you can just open your HTML file in any browser and view it, when you a
     - Open Command Prompt. Change directory to the workshop folder. Start a local server.
     - You don't have to type in the whole folder name, write the first few letters (case-sensitive) and press `Tab` key to auto-complete. Note backslash and not forward slashes in Windows.
     ```
-        > cd Documents\Bootcamp\Day_3\Web_Apps_with_Leaflet_and_D3\
+        > cd Documents\workshop-intro-d3-leaflet\
         > C:\Python27\ArcGIS10.4\python -m SimpleHTTPServer
     ```
 
@@ -27,22 +27,14 @@ Although you can just open your HTML file in any browser and view it, when you a
 You are going to be working in multiple windows.
 * Minimize (__don't close__) Command Prompt/Terminal window
 * Browser tab opened to `localhost:8000`. If you follow any of the links from here, open the links in a new tab.
-* [GitHub repo](https://github.com/berkeley-gif/bootcamp/blob/master/Day_3/Web_Apps_with_Leaflet_and_D3/leaflet/README.md) open in another browser tab
+* [GitHub repo](https://github.com/berkeley-gif/workshop-intro-d3-leaflet/tree/master/leaflet_exercises) open in another browser tab
 * Javascript file for exercise open in a code editor, e.g. Sublime Text
 * At any point you will be editing the index.js files only, e.g. `leaflet/01/index.js`
 
 ### Exercises
-* 01 - [Make a map](./01/make_a_map.md)
-* 02 - [Add Overlay](./02/add_overlay.md)
-* 03 - [Style Overlay](./03/style_overlay.md)
-* 04 - [Working with larger datasets](./04/working_with_larger_datasets.md)
-* 05 - [Add a Leaflet plugin for Geocoding](./05/add_a_geocoder.md)
-* 06 - [Spatial Analysis in your browser](./06/spatial_analysis_in_your_browser.md)
-* Review:
-    - Adding content and styling to make it look like a real website
-    - Adding legends
-    - An example of using the MarkerCluster Leaflet plugin
-    - An example of using the Turf.js buffer functionality
+* 01 - [Make a map, add basemap](./01/make_a_map.md)
+* 02 - [Add and style data](./02/add_overlay.md)
+* 03 - [Working with larger datasets](./04/working_with_larger_datasets.md)
 
 
 

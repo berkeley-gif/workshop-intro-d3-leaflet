@@ -1,6 +1,6 @@
-## 03 - Style overlay
+## 02 - Add and style data
 
-In this exercise we are going to experiment with applying custom styles to an overlay. We will also add a new Layer control to the Leaflet map.
+In this exercise we are going to add your thematic data to the Leaflet app and styling it. We will also add a new Layer control to the Leaflet map. 
 
 Leaflet Docs
 - [GeoJSON](http://leafletjs.com/reference-1.0.3.html#geojson)
@@ -8,9 +8,9 @@ Leaflet Docs
 
 ### Steps
 
-1. In your browser, click on `03/`
+1. In your browser, click on `02/`
 
-2. In code editor, open `03/index.js`. Copy and paste the code below into the file.
+2. In code editor, open `02/index.js`. Copy and paste the code below into the file.
 
 3. Leaflet allows you to pass a variety of options to `L.geoJson` to style your layer. The options are written as [callback functions](http://www.impressivewebs.com/callback-functions-javascript/).
 

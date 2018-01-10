@@ -1,4 +1,4 @@
-## 01 - Make a map
+## 01 - Make a map, add basemap
 
 This exercise covers the basics for creating a Leaflet map element and adding a basemap to it.
 
