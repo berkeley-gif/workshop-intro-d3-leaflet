@@ -47,6 +47,10 @@
     .bold {
       background-color: antiquewhite;
     }
+    .table table {
+      width: 100%;
+      font-size: 0.9rem;
+    }
     .footnote {
       position: absolute;
       color: #A8A358;
@@ -754,19 +758,26 @@ d3.selectAll('p').style('color', 'red');
 - Exercise: [D3- Declarative API](http://blockbuilder.org/mukhtyar/89e0407a1828d59c72e7)
 
 ---
+class: table
+
 ## Core Concepts - Selections
 
 - D3 provides shorthand for selecting and manipulating DOM objects (similar to jQuery)
 
   - .bold[d3.select()], .bold[d3.selectAll()]
 
-- Create/Read/Update/Delete (CRUD) properties of selections
-- Getters and setters
-  - .bold[selection.attr(name[, value])]
-  - .bold[selection.style(name[, value])]
-  - .bold[selection.classed(name[, value])]
-  - .bold[selection.text(name[, value])]
-  - .bold[selection.html(name[, value])]
+- Modify properties of selections
+  - Create/Read/Update/Delete (CRUD)
+  - Using Getters and setters
+
+|Name|Behaviour|Example|
+|--- |--- |--- |
+|.style|Update the style|d3.selectAll('circle').style('fill', 'red')|
+|.attr|Update an attribute|d3.selectAll('rect').attr('width', 10)|
+|.classed|Add/remove a class attribute|d3.select('.item').classed('selected', true)|
+|.property|Update an element's property|d3.selectAll('.checkbox').property('checked', false)|
+|.text|Update the text content|d3.select('div.title').text('My new book')|
+|.html|Change the html content|d3.select('.legend').html('<span>0 - 10</span>')|
 
 - Exercise: [D3 - Selections](http://blockbuilder.org/mukhtyar/e2e2d41f9828ea4459e0161878cf8f40)
 
@@ -775,19 +786,22 @@ Methods as dual purpose getters and setters is something you will see and use a 
 ---
 ## Core Concepts - Selections (contd.)
 
-- .bold[selection.append(type) && selection.insert(type[, before])]
+- Append/insert elements to elements to existing selections
+  - .bold[selection.append(type) && selection.insert(type[, before])]
 
 ```javascript
 d3.select('body').append('p');
 ```
 
-- .bold[selection.remove()]
+- Remove items from selections
+  - .bold[selection.remove()]
 
 ```javascript
 d3.select('body').remove('p');
 ```
 
-- Handle events - .bold[selection.on()]
+- Handle events
+  - .bold[selection.on()]
 
 ```javascript
 d3.selectAll('button').on('click', handleButtonClicks);
@@ -809,26 +823,39 @@ d3.select('body').on('mousemover', trackMousePosition);
 But when it comes to controlling a document or visualization based on underlying data, D3's power and expressiveness are truly unparalleled.
 The fundamental API for this is selection.data which accepts an array of data items and joins them to the DOM elements in the selection.
 ---
+class: img100
+
+## Core Concepts - Data Binding (contd.)
+
+![](../assets/images/enter-append.png)
+
+---
 ## Core Concepts - Data Binding (contd.)
 
 - What if we have more data than existing elements? Enter...
-
+- Exercise: [D3 - Enter Selection](http://blockbuilder.org/mukhtyar/56405be0691ebeff058ce91804cab001)
 - ENTER, UPDATE and EXIT SELECTIONS
   - Mike Bostock - [Thinking with Joins](https://bost.ocks.org/mike/join/)
   - Mike Bostock - [General Update Pattern examples](https://bl.ocks.org/mbostock/3808218)
   - Also [D3 In Depth book](http://d3indepth.com/) (in progress) is great!
 
 ![](../assets/images/data-join.png)
-
-- Exercise: [D3 - Enter Selection](http://blockbuilder.org/mukhtyar/182862bdc1cce6f3c19cf5bc657c209c)
-
 ---
 ## Core Concepts - Data Binding (contd.)
 
 - Use with dynamic data
 
-- Exercise: [D3 - Enter, Update, Exit](http://blockbuilder.org/mukhtyar/2eaf29426bdc09a328fd7666a01310df)
+  - Exercise: [D3 - Enter, Update, Exit](http://blockbuilder.org/mukhtyar/2eaf29426bdc09a328fd7666a01310df)
 
+- Use with data from Cal-Adapt API
+
+  - Exercise: [D3 - Get Data from API](http://blockbuilder.org/mukhtyar/61d40e36f4c187c5a36207fda5a00e6d)
+---
+class: img100
+
+## Core Concepts - Data Binding (contd.)
+
+![](../assets/images/enter-update-exit.png)
 ---
 ## Core Concepts - Scales
 
@@ -879,6 +906,8 @@ percentToDecimal(100) // 1
 - Documentation - [d3-axis](https://github.com/d3/d3-axis)
 
 - Exercise - [Bar Chart](http://blockbuilder.org/mukhtyar/054ffe48763e1c28448ae0d032e12ffe)
+
+- Exercise - [Bar Chart using Cal-Adapt data](http://blockbuilder.org/mukhtyar/f50577e4bad9f522ec8bc0d3500fa1bc)
 
 
 ---
@@ -1134,9 +1163,10 @@ class: center
 
 <br>
 #### You Pick!
-Visualization, Web Development, Learning,
+Visualization, Web Development, Learning Strategies.
 
-Deeper dive into some examples, ...
+Deeper dive into some examples
+ - (D3 In Depth Examples](http://d3indepth.com/introduction/)
 
 <br/>
 
