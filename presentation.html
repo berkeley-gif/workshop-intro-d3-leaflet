@@ -751,7 +751,7 @@ Unfortunately, D3 also has a bit of a reputation as being hard to learn, but it 
 d3.selectAll('p').style('color', 'red');
 ```
 
-- Example: [D3- Declarative API](http://blockbuilder.org/mukhtyar/89e0407a1828d59c72e7)
+- Exercise: [D3- Declarative API](http://blockbuilder.org/mukhtyar/89e0407a1828d59c72e7)
 
 ---
 ## Core Concepts - Selections
@@ -768,7 +768,7 @@ d3.selectAll('p').style('color', 'red');
   - .bold[selection.text(name[, value])]
   - .bold[selection.html(name[, value])]
 
-- Example: [D3 - Selections](http://blockbuilder.org/mukhtyar/e2e2d41f9828ea4459e0161878cf8f40)
+- Exercise: [D3 - Selections](http://blockbuilder.org/mukhtyar/e2e2d41f9828ea4459e0161878cf8f40)
 
 ???
 Methods as dual purpose getters and setters is something you will see and use a lot. selection.attr is for working with element attributes. When calling selection.attr(name) the method will act as a getter and return the name attribute's value. selection.attr(name, value) will cause the method to act as a setter, assigning value to the name attribute.
@@ -801,9 +801,9 @@ d3.select('body').on('mousemover', trackMousePosition);
 - Real power of D3 is joining data and selections
 - .bold[selection.data()] - accepts an array of data items and joins them to the DOM elements in the selection
 
-- Example: [D3 - Data Binding 1](http://blockbuilder.org/mukhtyar/1e6652ca51b77c78e4567874137ebc01)
+- Exercise: [D3 - Data Binding 1](http://blockbuilder.org/mukhtyar/1e6652ca51b77c78e4567874137ebc01)
 
-- Example with SVG: [D3 - Data Binding 2](http://blockbuilder.org/mukhtyar/182862bdc1cce6f3c19cf5bc657c209c)
+- Exercise with SVG: [D3 - Data Binding 2](http://blockbuilder.org/mukhtyar/182862bdc1cce6f3c19cf5bc657c209c)
 
 ???
 But when it comes to controlling a document or visualization based on underlying data, D3's power and expressiveness are truly unparalleled.
@@ -820,14 +820,14 @@ The fundamental API for this is selection.data which accepts an array of data it
 
 ![](../assets/images/data-join.png)
 
-- Example: [D3 - Enter Selection](http://blockbuilder.org/mukhtyar/182862bdc1cce6f3c19cf5bc657c209c)
+- Exercise: [D3 - Enter Selection](http://blockbuilder.org/mukhtyar/182862bdc1cce6f3c19cf5bc657c209c)
 
 ---
 ## Core Concepts - Data Binding (contd.)
 
 - Use with dynamic data
 
-- Example: [D3 - Enter, Update, Exit](http://blockbuilder.org/mukhtyar/2eaf29426bdc09a328fd7666a01310df)
+- Exercise: [D3 - Enter, Update, Exit](http://blockbuilder.org/mukhtyar/2eaf29426bdc09a328fd7666a01310df)
 
 ---
 ## Core Concepts - Scales
@@ -837,15 +837,7 @@ The fundamental API for this is selection.data which accepts an array of data it
 
 ![](../assets/images/mapping.png)
 
-```javascript
-const percentToDecimal = d3.scaleLinear()
-  .domain([0, 100])
-  .range([0, 1])
-
-percentToDecimal(0)   // 0
-percentToDecimal(50)  // 0.5
-percentToDecimal(100) // 1
-```
+- Documentation - [d3.scales](https://github.com/d3/d3-scale)
 
 ???
 another one of D3’s fundamental concepts is devoted entirely to transformations. Data visualization is ultimately about transformation. Quarterly revenue becomes column height, the winning political party becomes a state's fill color on a map, and on and on. In D3 these transformations are done using scales, and they're another one of D3's core concepts.
@@ -856,70 +848,47 @@ Calling d3.scaleLinear() will instantiate a new linear scale. We then call two m
 ---
 ## Core Concepts - Scales (contd.)
 
-- Scales in practice
+- Mapping from data attributes (domain) to display (range)
+  - e.g. date -> x value, data value -> opacity, data value -> y value
 
 ```javascript
-// specify chart dimensions
-const width = 600;
-const height = 400;
-
-// create a scale to map scores to bar widths
-// test scores are stored as percentages
-// a score of 100 should create a full-width bar
-const xScale = d3.scaleLinear()
-  .domain([0, 100])
-  .range([0, width]);
-
-d3.select('#chart')
-  .selectAll('div')
-  .data(data)
-  .enter()
-    .append('div')
-    .style('width', function(d) {
-      // pass the score through the linear scale function
-      return xScale(d[subject]) + 'px'
-    });
+  d3.scaleLinear()
+    .domain([min, max]) // input
+    .range([min, max]); // output
 ```
+
+- Linear scale
+
+```javascript
+const percentToDecimal = d3Scale.scaleLinear()
+  .domain([0, 100])
+  .range([0, 1])
+
+percentToDecimal(0)   // 0
+percentToDecimal(50)  // 0.5
+percentToDecimal(100) // 1
+```
+
+- Exercise - [d3.scales](https://github.com/d3/d3-scale)
+
 ---
-## Core Concepts - Scales (contd.)
+## Core Concepts - Axes
 
-- Lot of other scales, e.g. .bold[d3.bandScale()]
+- Human readable reference for scales
 
-```javascript
-// specify chart dimensions
-const width = 600;
-const height = 400;
+- Documentation - [d3-axis](https://github.com/d3/d3-axis)
 
-// create a scale to map scores to bar widths
-// test scores are stored as percentages
-// a score of 100 should create a full-width bar
-const xScale = d3.scaleLinear()
-  .domain([0, 100])
-  .range([0, width]);
+- Exercise - [Bar Chart](http://blockbuilder.org/mukhtyar/054ffe48763e1c28448ae0d032e12ffe)
 
-const yScale = d3.scaleBand()
-  .domain(data.map(function(d) { return d.name }))
-  .range([0, height]);
 
-d3.select('#chart')
-  .selectAll('div')
-  .data(data)
-  .enter()
-    .append('div')
-    .style('width', function(d) {
-      // pass the score through the linear scale function
-      return xScale(d[subject]) + 'px'
-    })
-    .style('height', function(d) {
-      return yScale.bandwidth() + 'px'
-    });
-```
 ---
 ## D3 - Other concepts
 
 - Lots of convenience functions for loading and manipulating data, working with arrays
 
-- Axes, Scales, Colors
+- Shapes - .bold[d3.line()], .bold[d3.circle()], .bold[d3.pie()], .bold[d3.arc()]
+
+- Colors
 
 - Manipulate structure of your data - d3.nest()
 
@@ -1107,7 +1076,7 @@ class: center
 ---
 # Leaflet Exercises
 
-- [Link to Github Repo](https://github.com/berkeley-gif/bootcamp/blob/master/Day_3/Web_Apps_with_Leaflet_and_D3/leaflet/README.md)
+- [Link to Github Repo](https://github.com/berkeley-gif/workshop-intro-d3-leaflet/tree/master/leaflet_exercises)
 
 - Before we begin:
   - Start a local server
